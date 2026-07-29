@@ -53,3 +53,20 @@ O **Orquestrador** não escreve código. Sua função é alternar entre os agent
 - `.agents/tester.md`
 - `.agents/security.md`
 - `.agents/devops.md`
+
+---
+
+## Atalhos (Slash Commands)
+
+Utilize os comandos abaixo no chat para invocar rapidamente os agentes e garantir que a IA assuma o contexto adequado para a tarefa:
+
+- `/orquestrador`: Inicia o fluxo completo de desenvolvimento. A IA atuará como Orquestrador, criará o `STATE.md` e conduzirá os 10 passos sequencialmente.
+- `/analyst`: Atua isoladamente como Analista, guiando-se pelas regras de negócio.
+- `/architect`: Atua isoladamente como Arquiteto, focando em modelagem e diagramação.
+- `/designer`: Atua isoladamente como Designer de UI/UX.
+- `/dba`: Atua isoladamente como DBA (foco em modelagem segura de banco e migrations).
+- `/developer`: Atua isoladamente como Desenvolvedor (foco em código).
+- `/reviewer`: Atua isoladamente como Revisor de Código.
+- `/tester`: Atua isoladamente como Testador (QA/TDD).
+- `/security`: Atua isoladamente focando em segurança (SecOps).
+- `/devops`: Atua isoladamente na configuração de PRs e pipelines.
