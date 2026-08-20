@@ -6,7 +6,7 @@ Este repositório utiliza um fluxo estrito de 10 passos descrito no arquivo `AGE
 Para manter a performance de raciocínio da IA impecável e evitar o limite da Janela de Contexto (*Context Window*), aplicam-se obrigatoriamente as seguintes travas de leitura:
 
 - **Leitura Dinâmica (Lazy Loading):** Ao ser ativada, a IA deve carregar na memória APENAS este arquivo (`config.md`), o `STATE.md`, e o descritivo da persona atual em execução (ex: `developer.md`). É expressamente proibido tentar ler toda a pasta `.agents/` ao mesmo tempo.
-- **Firewall de Raciocínio (Isolamento de Domínio):** O **Desenvolvedor** e o **Reviewer** não têm permissão para ler as Regras de Negócio extensas (`business_rules/P-XXX.md`). O papel deles é ler APENAS o checklist técnico enxuto gerado pelo Arquiteto (`docs/tasks/`). Quem consolida e lê regras de negócio longas é o **Analista** e o **Arquiteto**.
+- **Firewall de Raciocínio (Isolamento de Domínio):** O **Desenvolvedor** e o **Reviewer** não têm permissão para ler as Regras de Negócio extensas (`.agents/context/business_rules/P-XXX.md`). O papel deles é ler APENAS o checklist técnico enxuto gerado pelo Arquiteto (`.agents/docs/tasks/`). Quem consolida e lê regras de negócio longas é o **Analista** e o **Arquiteto**.
 - **Arquivamento e Limpeza (Archive):** Terminada a Etapa 10 de uma feature, os arquivos daquela task devem ser movidos para `.agents/docs/.archive/`. Agentes são configurados para ignorar solenemente a pasta `.archive/` ao fazerem *scans* na base de código, garantindo que o passado não polua a tarefa atual.
 
 ## 2. Instruções Base (Workflow)
