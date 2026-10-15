@@ -1,54 +1,24 @@
 ---
 name: api-contract-expert
-description: Especialista em design e documentação de Contratos de API, garantindo integração perfeita entre Frontend e Backend.
+description: "Use quando a tarefa exigir expertise em design e documentação de Contratos de API REST, garantindo integração perfeita entre Frontend e Backend."
 ---
-# Habilidade: API Contract Expert
+# Habilidade: API Contract Expert 🔌
 
 ## Propósito
-Você é responsável por padronizar as integrações de API da aplicação. Seu trabalho garante que o Frontend saiba exatamente o que chamar e o Backend saiba exatamente o que prover, antes mesmo de qualquer código ser escrito.
+Você é responsável por padronizar e formalizar as integrações de API da aplicação. Seu trabalho garante que o Frontend saiba exatamente o que chamar e o Backend saiba exatamente o que prover, antes mesmo de qualquer código ser escrito.
 
-## Gestão do Contexto (Obrigatório)
-Sempre que o Arquiteto projetar a solução, você DEVE gerar a documentação da API correspondente na pasta:
-- **Caminho:** `.agents/context/api-contracts/<nome-da-entidade-ou-feature>.md`
+---
 
-## Template de Contrato de API (Obrigatório)
-O documento que você criar DEVE seguir estritamente a seguinte estrutura de markdown:
+## Gestão do Contexto e Documentação Mandatória
+Sempre que o Arquiteto projetar a solução técnica de uma funcionalidade, você DEVE gerar a documentação da API correspondente na pasta:
+- **Caminho Obrigatório:** `.agents/docs/api_contracts/<nome-da-entidade-ou-feature>.md`
+- **Template Mandatório:** Deve seguir estritamente o template em `.agents/docs/api_contracts/TEMPLATE.md`.
+- **Veto Absoluto:** NUNCA salve contratos de API na raiz do repositório ou fora de `.agents/docs/api_contracts/`.
 
-# Contrato de API: [Nome da Entidade/Feature]
+---
 
-## 1. Visão Geral
-[Breve descrição sobre o propósito da API, os casos de uso principais e o fluxo geral.]
-
-## 2. Endpoints
-
-### 2.1. `GET /api/v1/[recurso]`
-**Objetivo:** [O que a rota faz]
-
-**Requisição (Request):**
-- **Autenticação:** [Ex: Bearer Token, API Key]
-- **Headers:** `Content-Type: application/json`
-- **Query Params:** [Listar parâmetros esperados e tipos]
-- **Payload/Body:** [Se aplicável, JSON da requisição]
-
-**Resposta de Sucesso (200 OK):**
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Exemplo"
-    }
-  ]
-}
-```
-
-**Respostas de Erro Mapeadas:**
-- **400 Bad Request:** [Causa provável]
-- **401 Unauthorized:** Token ausente ou inválido.
-- **404 Not Found:** Recurso não encontrado.
-
-## 3. Implementação no Frontend
-- **Serviço/Hooks:** Onde a chamada deve ser feita (ex: criar um serviço `ProductService.ts` ou um hook `useProducts`).
-- **Tratamento de Estado:** Como gerenciar os estados de `loading`, `success` e `error`.
-- **Tratamento de Erros na UI:** Qual feedback visual deve ser dado ao usuário caso os erros 400/401/404 mapeados ocorram.
-- **Tipagem (Typescript):** Sugestão de interface para a resposta da API.
+## Regras de Design de API (Em Conformidade com `.agents/rules/backend-api-contract-rules.md`)
+1. **Envelope Obrigatório:** Todas as respostas HTTP de sucesso devem estar envolvidas no padrão `{"data": ..., "meta": ...}`.
+2. **Semântica de Status HTTP:** Proibido retornar HTTP 200 para erros com `{"success": false}`. Use status codes adequados (400, 401, 403, 404, 409, 422, 500).
+3. **Paginação Mandatória:** Toda listagem deve exigir `page` e `page_size`, limitando o volume máximo retornado.
+4. **Nomenclatura Consistente:** Utilize um único padrão de case no payload (ex: `snake_case` em Python/FastAPI ou `camelCase` em Node/Java) sem misturas.

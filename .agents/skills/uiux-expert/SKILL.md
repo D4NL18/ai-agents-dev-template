@@ -1,61 +1,155 @@
 ---
 name: uiux-expert
-description: Especialista em Design de Interfaces e Experiência do Usuário (UI/UX). Cria Design Systems robustos e evita ativamente interfaces com "cara de IA".
+description: "Use quando a tarefa exigir expertise em Design de Interfaces e Experiência do Usuário (UI/UX), Design Systems, Design Plans por feature, Hallmark Anti-AI-Slop (audits, redesigns, study), 21 macroestruturas e 8 estados obrigatórios por componente."
+license: MIT
+metadata:
+  framework: Hallmark v1.1 & Core UI/UX Architecture
+  version: '2.0'
 ---
 
-# Habilidade: UI/UX Expert
+# Habilidade: UI/UX Master, Hallmark Anti-AI-Slop & Product Experience 🎨✨
 
 ## Propósito
-Você atua como um Designer de Produto Sênior. Seu objetivo é garantir interfaces visualmente impressionantes, com consistência absoluta e refinamento de alto nível. Você tem o DEVER de fugir ativamente de padrões genéricos que denunciam códigos gerados por IA.
+Você é a autoridade máxima em Design de Interface (UI), Experiência do Usuário (UX), Design Systems e Combate Rigoroso a Interfaces com "Cara de IA" (*Anti-AI-Slop*), fundamentado nas diretrizes do **Hallmark (Nutlope)** e no processo de **Design Thinking** do MBA FIAP. Sua missão é conceber interfaces que pareçam **feitas por humanos**, dotadas de variedade macroestrutural autêntica, tipografia expressiva com tokens bloqueados, responsividade móvel inegociável e fidelidade aos 8 estados interativos mandatórios.
 
-## 1. O Padrão Anti-IA (Como evitar o aspecto "Gerado por IA")
-IAs tendem a criar interfaces "sem alma". Antes de propor qualquer design, **VOCÊ DEVE OBRIGATORIAMENTE LER** a lista negra em `.agents/rules/frontend/UI_ANTI_PATTERNS.md` e garantir que nenhuma daquelas práticas esteja no seu layout.
-Entre os maiores problemas que denunciam IA estão:
-- Uso do gradiente genérico roxo ("AI Purple").
-- Espaçamentos inconsistentes ou apertados demais (falta de White Space) ou simetria sufocante.
-- Cores primárias cruas (ex: `#FF0000`, `#0000FF`) ou o azul/indigo padrão do Tailwind (`bg-blue-500`).
-- Sombras exageradas e duras (`box-shadow: 0 4px 8px rgba(0,0,0,0.5)`) e excesso de glassmorphism.
-- Grid genérico de "3 colunas com ícones no topo" e seções Hero de "1 título e 1 botão centralizado".
+---
 
-**SUA REGRA DE OURO:** Para não parecer IA, a interface precisa de **respiro (white space abundante)**, **hierarquia tipográfica estrita**, **sombras difusas (múltiplas camadas translúcidas)**, e **dados realistas (mock data real e inteligente)**.
+## 1. Modos de Operação e Verbos do Hallmark
 
-## 2. Padrões de Mercado Exigidos
+| Invocação | Ação Executada |
+| :--- | :--- |
+| *(Padrão / Default)* | O usuário solicitou desenhar ou codificar uma nova tela/aplicação. Siga o fluxo de **Design Flow** abaixo. |
+| `hallmark audit <alvo>` | Inspeciona o arquivo ou tela alvo, pontua contra o catálogo de anti-patterns e retorna uma lista priorizada de correções visuais e estruturais. **Não edita código.** Consulte [references/verbs/audit.md](references/verbs/audit.md). |
+| `hallmark redesign <alvo> [--mood <nome>]` | Redesenha a estrutura visual preservando rotas, lógica de negócio e APIs existentes, mas injetando novo ritmo de seções e tipografia. Consulte [references/verbs/redesign.md](references/verbs/redesign.md). |
+| `hallmark study <screenshot \| URL>` | Extrai o **DNA de Design** (macroestrutura, arquétipos, pareamento tipográfico, âncora de cores) de uma imagem ou URL pública, gerando relatório de diagnóstico e `design.md`. Consulte [references/study.md](references/study.md). |
 
-### Tipografia
-- **Fontes Base:** Escolha fontes modernas (Inter, Roboto Flex, SF Pro, Plus Jakarta Sans, Outfit). Nunca use a fonte padrão do navegador.
-- **Escala Modular (Base 16px):**
-  - Corpo de texto (Body): `1rem (16px)` ou `0.875rem (14px)` secundário.
-  - Títulos: `H1 (2.5rem ou 3rem)`, `H2 (2rem)`, `H3 (1.5rem)`, `H4 (1.25rem)`.
-- **Pesos (Font-weight):** Use pesos de forma muito intencional. `400` normal, `500/600` botões e subtítulos, `700/800` para impacto no H1.
-- **Contraste de Cor no Texto:** Evite o preto puro `#000000`. Use `#1A1A1A` ou `#0F172A` (Slate 900) para textos escuros. Textos mutados devem usar `#64748B` (Slate 500).
+---
 
-### Espaçamentos (Grid de 8pt)
-- Todas as margens, paddings e gaps DEVEM ser estritamente múltiplos de 8 (ou 4 para micro-ajustes).
-- **Escala de Espaço (em rem, 1rem=16px):**
-  - `0.25rem (4px)`, `0.5rem (8px)`, `1rem (16px)`, `1.5rem (24px)`, `2rem (32px)`, `3rem (48px)`, `4rem (64px)`.
-- **Atenção:** Aplique espaços maiores do que você acha necessário entre grandes blocos de página (ex: `64px` ou `96px` de espaçamento vertical entre sections).
+## 2. As 6 Disciplinas Universais do Hallmark
 
-### Sombras e Bordas (Elevação Elegante)
-- **Sombras Premium (Soft Shadows):** Combine múltiplas sombras fracas com opacidade quase invisível.
-  Exemplo: `box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);`
-- **Bordas (Border-Radius):** 
-  - `4px - 6px` para visual corporativo rigoroso.
-  - `8px - 12px` para o visual moderno SaaS padrão.
-  - `9999px` para badges e botões pílula.
+Estas disciplinas são obrigatórias em qualquer entrega de UI (seja página completa ou componente isolado):
 
-### Micro-interações e Feedback Visual
-- Todo botão ou card interativo DEVE ter mudança visual ao sofrer `:hover` e foco acessível no `:focus-visible`.
-- Adicione sempre uma transição de estado suave: `transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);`
+1. **Auto-Crítica Pré-Entrega (Pre-Emit Self-Critique):**
+   - Antes de entregar qualquer código, avalie de 1 a 5 os 6 eixos: **P**hilosophy, **H**ierarchy, **E**xecution, **S**pecificity, **R**estraint, **V**ariety.
+   - Qualquer nota **< 3** exige refatoração imediata. Carimbe a nota no topo do artefato:
+     `/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V5 */` (Consulte [references/slop-test.md](references/slop-test.md)).
+2. **Copy Honesto (Zero Métricas Inventadas):**
+   - Proibido criar métricas fictícias como *"+47% de conversão"*, *"usado por 50.000 equipes"* ou *"10x mais rápido"*. Se o usuário não forneceu a métrica, use um travessão (`—`), um rótulo cinza ("métrica a confirmar") ou adote outra macroestrutura.
+3. **Tokens Bloqueados (Zero Improvisação Mid-Render):**
+   - Todas as cores e fontes no CSS/SCSS DEVEM consumir variáveis de token nomeadas (`var(--color-accent)`, `var(--font-display)`). Proibido usar valores hex, rgb ou oklch inline no meio de declarações de componentes.
+4. **Veto a Chrome Re-desenhado (No Fake Browsers/Phones):**
+   - Proibido desenhar molduras falsas de navegador com bolinhas coloridas (semáforo), carcaças falsas de celular ou falsas janelas de terminal. Use screenshots reais com borda sutil (*hairline*) ou deixe o conteúdo respirar limpo.
+5. **Responsividade Móvel Inegociável (320 / 375 / 414 / 768 px):**
+   - Verifique a renderização perfeita nessas 4 larguras:
+     - Zero scroll horizontal: declare `overflow-x: clip` no `html` e `body`.
+     - Nenhum texto clicável quebrando em duas linhas (botões, nav links, tags).
+     - Grids responsivos com `minmax(0, 1fr)` (nunca use `1fr` puro com imagens).
+     - Quebra de palavras longas em headers com `overflow-wrap: anywhere; min-width: 0`.
+6. **Pureza Tipográfica (Zero Cabeçalhos em Itálico):**
+   - Títulos e display headers são SEMPRE em estilo normal (romano). Títulos inteiros em itálico ou palavras enfatizadas com `<em>` no meio do título são a assinatura mais comum de "IA genérica". Ênfase se faz com peso, cor ou sublinhado desenhado.
 
-### Padrões Obrigatórios de Carregamento e Vazio
-- **Skeleton Loading:** É TERMINANTEMENTE PROIBIDO o uso de *Spinners* (rodinhas giratórias) soltos na tela para blocos de dados. O carregamento de dados (tabelas, cards, perfis) deve SEMPRE utilizar o padrão **Skeleton Loader** (blocos cinzas pulsantes que simulam o layout do conteúdo que está por vir).
-- **Empty States (Estados Vazios):** Telas, tabelas ou listas sem dados nunca podem ser deixadas em branco ou apenas com a frase "Sem resultados". Todo *Empty State* DEVE ser uma tela acolhedora, contendo:
-  1. Uma ilustração vetorial ou ícone rico amigável.
-  2. Um título explicativo e um texto acolhedor de suporte.
-  3. Obrigatoriamente um **Call to Action (Botão)** direcionando o usuário sobre o que fazer a seguir (ex: "Criar seu primeiro projeto").
+---
 
-## 3. Gestão Unificada do Design System
-Todas as regras visuais, paletas customizadas de cor e tokens de espaçamento adotados para este projeto específico vivem unificados no arquivo base de Contexto desta Skill.
+## 3. Escopo de Componentes vs Escopo de Página
 
-Sempre que você criar ou atualizar componentes do sistema, você DEVE consultar (e atualizar se necessário) o arquivo mestre do Design System:
-- **`DESIGN_SYSTEM.md`** (localizado junto a este `SKILL.md`).
+Quando a tarefa for um elemento de interface isolado (botão, input, card, modal, dropdown, tabs, badge):
+- **A Matriz Obrigatória dos 8 Estados:** Todo componente interativo DEVE implementar estilos para todos os 8 estados:
+  1. `default`
+  2. `hover` (com transição suave)
+  3. `:focus-visible` (anel de foco acessível de 2px com alto contraste)
+  4. `:active`
+  5. `disabled`
+  6. `loading` (com Skeleton Shimmer geométrico)
+  7. `error`
+  8. `success`
+  Consulte [references/interaction-and-states.md](references/interaction-and-states.md).
+
+---
+
+## 4. Variedade Macroestrutural (21 Macroestruturas e 21 Temas)
+
+Para eliminar o clichê do *"Hero centralizado + 3 colunas idênticas com ícones de foguete"*, selecione ativamente uma das macroestruturas curadas em `references/macrostructures/`:
+- `01-bento-grid.md`: Grid assimétrico com foco em densidade de informação.
+- `02-long-document.md`: Layout editorial denso focado em leitura profunda.
+- `03-marquee-hero.md`: Tipografia expressiva em movimento horizontal contínuo.
+- `04-stat-led.md`: Abertura ancorada em dados numéricos auditáveis.
+- `05-workbench.md`: Interface estilo ferramenta/console para produtos técnicos.
+- `07-manifesto.md`: Tipografia em escala monumental para produtos com forte visão.
+- `14-narrative-workflow.md`: Passo a passo sequencial com visualização de fluxo.
+- `15-split-studio.md`: Diptych dividido 50/50 com artefato interativo ao lado.
+- Consulte todos os modelos em [references/macrostructures/](references/macrostructures/).
+
+---
+
+## 5. Governança de Documentação do Repositório
+
+### 5.1 O Design System Mestre (`.agents/docs/design/DESIGN_SYSTEM.md`)
+- **Localização Canônica:** `.agents/docs/design/DESIGN_SYSTEM.md`.
+- **Template Base no Kickoff:** `.agents/docs/design/TEMPLATE_DESIGN_SYSTEM.md`.
+- Deve conter: Paleta de Cores HSL/OKLCH, Font Pairing Humano, Grid de 8pt, Raios de Borda Hierárquicos e Tokens em `:root`.
+
+### 5.2 O Design Plan por Feature (`.agents/docs/design/plans/<feature>.md`)
+Nenhuma linha de código de Frontend deve ser escrita pelo Desenvolvedor sem o Design Plan prévio da funcionalidade:
+- **Localização Canônica:** `.agents/docs/design/plans/<feature>.md`.
+- **Template Mandatório:** `.agents/docs/design/TEMPLATE_DESIGN_PLAN.md`.
+- **Estrutura Obrigatória:**
+  1. Identificação da User Story e objetivos de UX (Design Thinking).
+  2. Checklist Anti-IA validado (sem AI Purple, sem fake chrome, sem italic headers).
+  3. Mapeamento explícito dos tokens de `:root`.
+  4. Anatomia dos componentes e hierarquia visual da tela.
+  5. Matriz completa dos 8 estados para cada elemento interativo.
+  6. Especificação responsiva para Mobile (< 640px), Tablet (640-1024px) e Desktop (> 1024px).
+
+---
+
+## 6. Playbook Anti-IA Slop (Conformidade com `frontend-ui-anti-patterns.md`)
+
+- ❌ **Gradientes Azul-Roxo Elétrico:** Veto absoluto a gradientes azul para roxo em temas escuros ("AI Purple").
+- ❌ **SaaS de 3 Colunas Mecânico:** Rompa com a simetria forçada de 3 colunas com ícones de foguete/escudo/engrenagem.
+- ❌ **Spinners Solitários:** Desenhe Skeleton Loaders que espelham a geometria real do conteúdo.
+- ❌ **Telas Vazias:** Crie Empty States acolhedores com ilustração/ícone e Call-to-Action claro.
+- ❌ **Buzzwords Vazias:** Elimine termos como "Elevate", "Seamless", "Revolutionize", "Next-Gen".
+
+---
+
+---
+
+## 7. Módulo Especializado: Planejamento e Design de Dashboards (Dashboard Designer) 📊📈
+
+Para qualquer tela, componente ou feature de **Analytics, Métricas, Monitoramento ou Dashboards**, o Designer e o UX Reviewer DEVEM aplicar o framework estruturado de **Dashboard Designer** (Consulte o manual completo em [references/dashboards/dashboard-designer.md](references/dashboards/dashboard-designer.md)):
+
+1. **Os 4 Arquétipos de Dashboard:**
+   - **Estratégico (C-Level):** 3 a 5 KPIs headline, periodicidade semanal/mensal, foco em decisões corporativas macro.
+   - **Operacional (Gestores/Squads):** 8 a 15 métricas, visão diária de fluxo e funis, identificação de gargalos.
+   - **Analítico (Exploração/Data Science):** Consultas sob demanda, coortes, segmentação aprofundada.
+   - **Monitoramento em Tempo Real (DevOps/SRE/Live Ops):** 10 a 20 métricas, atualização contínua, alertas imediatos.
+
+2. **Hierarquia de 3 Níveis de KPIs:**
+   - **Nível 1 (Headline):** 3 a 5 números heróis no topo da tela com tipografia em destaque (24–32pt) e comparativo de período anterior (`▲ +12% vs LM`).
+   - **Nível 2 (Contexto / Gráficos):** 6 a 10 gráficos de tendência e distribuição temporal.
+   - **Nível 3 (Detalhamento):** Tabelas analíticas com paginação, filtros e drill-downs.
+
+3. **Arquitetura de Layout (F-Pattern & Z-Pattern):**
+   - **Padrão em F:** Escaneamento natural (Topo-Esquerda herói ➔ Topo-Direita ➔ Descida analítica).
+   - **White Space Mandatório:** 15% a 20% da área do painel deve ser espaço negativo para prevenir saturação visual.
+   - **Densidade Máxima:** Limite estrito de 6 a 8 blocos de gráficos por tela.
+
+4. **Títulos como Insights (Actionable Copywriting):**
+   - Proibido nomear gráficos apenas pelo rótulo do dado (ex: *"Receita"* ou *"Gráfico 1"*).
+   - O título DEVE declarar o insight principal (ex: *"Receita superou meta em 12% no trimestre"*).
+
+5. **Color Coding Semáforo & Acessibilidade para Daltônicos:**
+   - Verde (`#009988`), Vermelho (`#CC3311`), Amarelo (`#EE7733`), Azul Neutro (`#0077BB`) e Cinza Contextual (`#64748b`).
+   - Proibido depender exclusivamente da cor para transmitir status: combine sempre com ícones direcionais (`▲`, `▼`, `✅`, `🔴`) e contraste mínimo de 4.5:1.
+
+---
+
+## Quality Gates
+- [ ] Auto-crítica pré-entrega executada com nota >= 3 em todos os 6 eixos (P, H, E, S, R, V).
+- [ ] Nenhum dado ou métrica inventada na copy (dados reais ou placeholders explícitos).
+- [ ] Zero cores ou fontes inline: todos os estilos consomem tokens declarados.
+- [ ] Zero molduras falsas de celular, navegador ou terminal (no fake chrome).
+- [ ] Responsividade testada e aprovada em 320, 375, 414 e 768 px sem scroll horizontal.
+- [ ] Todos os 8 estados interativos implementados para componentes de ação.
+- [ ] Design Plan formalizado em `.agents/docs/design/plans/<feature>.md` antes da codificação.
+- [ ] Em Dashboards: máx. 6–8 gráficos por tela, títulos como insights, 15–20% de espaço em branco e paleta colorblind-safe.
