@@ -1,5 +1,5 @@
 ---
-description: Governanca global de documentacao: todo artefato vive em .agents/docs/ e e proibido salvar documentacao na raiz do repositorio.
+description: "Governanca global de documentacao: todo artefato vive em .agents/docs/ e e proibido salvar documentacao na raiz do repositorio."
 trigger: always_on
 ---
 

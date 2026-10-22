@@ -1,5 +1,5 @@
 ---
-description: Use quando integrar LLMs (OpenAI, Anthropic, Gemini), escrever prompts, function calling, parsing de saida estruturada ou defesa contra Prompt Injection.
+description: "Use quando integrar LLMs (OpenAI, Anthropic, Gemini), escrever prompts, function calling, parsing de saida estruturada ou defesa contra Prompt Injection."
 trigger: model_decision
 ---
 

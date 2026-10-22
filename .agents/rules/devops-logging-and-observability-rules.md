@@ -1,5 +1,5 @@
 ---
-description: Use quando implementar logging estruturado, observabilidade, metricas, tracing, alertas ou mascaramento de PII em logs.
+description: "Use quando implementar logging estruturado, observabilidade, metricas, tracing, alertas ou mascaramento de PII em logs."
 trigger: model_decision
 ---
 

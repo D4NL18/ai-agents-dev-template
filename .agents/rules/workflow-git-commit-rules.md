@@ -1,5 +1,5 @@
 ---
-description: Workflow global de Git: Conventional Commits com rastreabilidade P-XXX, branches efemeras e Pull Requests.
+description: "Workflow global de Git: Conventional Commits com rastreabilidade P-XXX, branches efemeras e Pull Requests."
 trigger: always_on
 ---
 

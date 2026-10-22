@@ -1,5 +1,5 @@
 ---
-description: Regras de arquitetura e implementacao backend: isolamento rigido da regra de negocio (Clean Architecture) em relacao ao framework.
+description: "Regras de arquitetura e implementacao backend: isolamento rigido da regra de negocio (Clean Architecture) em relacao ao framework."
 trigger: glob
 globs:
   - "**/*.java"

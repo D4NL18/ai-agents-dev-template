@@ -1,5 +1,5 @@
 ---
-description: Regras de arquitetura e implementacao backend: performance de banco de dados, indices, paginacao e prevencao de N+1.
+description: "Regras de arquitetura e implementacao backend: performance de banco de dados, indices, paginacao e prevencao de N+1."
 trigger: glob
 globs:
   - "**/*.java"

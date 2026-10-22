@@ -1,5 +1,5 @@
 ---
-description: Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: governanca de Design System e Design Plans.
+description: "Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: governanca de Design System e Design Plans."
 trigger: glob
 globs:
   - "**/*.html"

@@ -1,6 +1,6 @@
 # Fluxo de Desenvolvimento com IA (AI Agents Workflow) 🤖🚀
 
-Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. O diretório `.agents/` é a fonte única da verdade: `agents/` (subagentes), `skills/` (1º nível, `<nome>/SKILL.md`), `rules/` (flat, com frontmatter de trigger), `workflows/` (slash commands) e `docs/` (documentação e estado).
+Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. O diretório `.agents/` é a fonte única da verdade: `agents/` (subagentes), `skills/` (1º nível, `<nome>/SKILL.md`, servindo também como slash commands), `rules/` (flat, com frontmatter de trigger) e `docs/` (documentação e estado).
 
 ---
 
@@ -95,7 +95,7 @@ Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. O diret�
 
 ---
 
-## Slash Commands (`.agents/workflows/`)
+## Slash Commands (Atalhos Nativos via `.agents/skills/<nome>/`)
 - `/orquestrador`, `/orquestrar`, `/o` — esteira completa de 5 Macro-Etapas ou despacho de auxiliares · `/init` — kickoff/fundação do projeto.
 - Pipeline: `/po`, `/analyst`, `/architect`, `/designer`, `/dba`, `/developer`, `/reviewer`, `/tester`, `/security`, `/devops`, `/ai_specialist`, `/privacy`.
 - Auxiliares: `/finance`, `/negotiator`, `/leader`, `/responsible_ai`, `/innovation`, `/n8n`.

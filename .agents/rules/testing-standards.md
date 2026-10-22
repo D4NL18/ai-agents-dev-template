@@ -1,5 +1,5 @@
 ---
-description: Use quando escrever, revisar ou executar testes automatizados (unitarios, integracao, contrato, E2E), TDD, mocks, cobertura ou Auto-Healer de testes.
+description: "Use quando escrever, revisar ou executar testes automatizados (unitarios, integracao, contrato, E2E), TDD, mocks, cobertura ou Auto-Healer de testes."
 trigger: model_decision
 ---
 

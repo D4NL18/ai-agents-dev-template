@@ -1,5 +1,5 @@
 ---
-description: Regras de arquitetura e implementacao backend: anti-padroes de Clean Code, SOLID e complexidade cognitiva.
+description: "Regras de arquitetura e implementacao backend: anti-padroes de Clean Code, SOLID e complexidade cognitiva."
 trigger: glob
 globs:
   - "**/*.java"

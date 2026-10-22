@@ -1,5 +1,5 @@
 ---
-description: Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: filtro Hallmark Anti-IA Slop.
+description: "Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: filtro Hallmark Anti-IA Slop."
 trigger: glob
 globs:
   - "**/*.html"

@@ -1,5 +1,5 @@
 ---
-description: Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: otimizacao de assets, imagens e midia.
+description: "Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: otimizacao de assets, imagens e midia."
 trigger: glob
 globs:
   - "**/*.html"

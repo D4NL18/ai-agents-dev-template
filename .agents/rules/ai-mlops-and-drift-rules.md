@@ -1,5 +1,5 @@
 ---
-description: Use quando treinar, versionar, empacotar ou fazer deploy de modelos de ML/Deep Learning, separar treino de inferencia, monitorar Data/Concept Drift ou configurar MLOps.
+description: "Use quando treinar, versionar, empacotar ou fazer deploy de modelos de ML/Deep Learning, separar treino de inferencia, monitorar Data/Concept Drift ou configurar MLOps."
 trigger: model_decision
 ---
 

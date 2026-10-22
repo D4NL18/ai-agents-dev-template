@@ -1,5 +1,5 @@
 ---
-description: Use quando configurar infraestrutura em nuvem, Cloud Run, GCS, Serverless, FinOps, Scale-to-Zero ou avaliar custos de cloud e IA.
+description: "Use quando configurar infraestrutura em nuvem, Cloud Run, GCS, Serverless, FinOps, Scale-to-Zero ou avaliar custos de cloud e IA."
 trigger: model_decision
 ---
 

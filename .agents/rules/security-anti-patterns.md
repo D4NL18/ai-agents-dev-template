@@ -1,5 +1,5 @@
 ---
-description: Anti-padroes de seguranca inegociaveis (secrets, injections, JWT, PII) com veto imediato por SecOps e Reviewer.
+description: "Anti-padroes de seguranca inegociaveis (secrets, injections, JWT, PII) com veto imediato por SecOps e Reviewer."
 trigger: always_on
 ---
 

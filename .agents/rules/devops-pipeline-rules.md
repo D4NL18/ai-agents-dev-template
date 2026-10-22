@@ -1,5 +1,5 @@
 ---
-description: Use quando configurar pipelines CI/CD, GitHub Actions, Docker multi-stage, Cloud Run, gestao de secrets, quality gates ou Pull Requests de release.
+description: "Use quando configurar pipelines CI/CD, GitHub Actions, Docker multi-stage, Cloud Run, gestao de secrets, quality gates ou Pull Requests de release."
 trigger: model_decision
 ---
 

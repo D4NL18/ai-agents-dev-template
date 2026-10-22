@@ -1,5 +1,5 @@
 ---
-description: Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: acessibilidade (A11y), ARIA e navegacao por teclado.
+description: "Regras de interface, componentes Angular, SCSS e prevencao de UI Anti-Patterns: acessibilidade (A11y), ARIA e navegacao por teclado."
 trigger: glob
 globs:
   - "**/*.html"

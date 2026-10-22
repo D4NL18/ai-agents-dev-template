@@ -1,5 +1,5 @@
 ---
-description: Use quando projetar ou implementar RAG, ingestao documental, chunking, embeddings, bancos vetoriais (pgvector, ChromaDB, Pinecone) ou defesas contra Indirect Prompt Injection.
+description: "Use quando projetar ou implementar RAG, ingestao documental, chunking, embeddings, bancos vetoriais (pgvector, ChromaDB, Pinecone) ou defesas contra Indirect Prompt Injection."
 trigger: model_decision
 ---
 

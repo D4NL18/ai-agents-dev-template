@@ -1,5 +1,5 @@
 ---
-description: Regras de arquitetura e implementacao backend: padroes rigidos de contrato de API REST com envelope data/meta.
+description: "Regras de arquitetura e implementacao backend: padroes rigidos de contrato de API REST com envelope data/meta."
 trigger: glob
 globs:
   - "**/*.java"

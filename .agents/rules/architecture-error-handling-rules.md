@@ -1,5 +1,5 @@
 ---
-description: Regras de arquitetura e implementacao backend: tratamento explicito, rastreavel e semantico de erros e excecoes.
+description: "Regras de arquitetura e implementacao backend: tratamento explicito, rastreavel e semantico de erros e excecoes."
 trigger: glob
 globs:
   - "**/*.java"
