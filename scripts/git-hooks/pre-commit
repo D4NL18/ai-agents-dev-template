@@ -1,0 +1,11 @@
+#!/bin/sh
+# Hook local (nao versionado): regenera .claude/ quando a fonte .agents/ (ou AGENTS.md) esta no commit.
+# Vive em .git/hooks, portanto NAO acompanha o copiar/colar de .agents + AGENTS.md para outros repositorios.
+[ -f scripts/sync-claude.py ] || exit 0
+git diff --cached --name-only | grep -qE '^(AGENTS\.md|\.agents/(agents|skills|rules)/|\.agents/(config\.md|hooks\.json|mcp_config\.json)|scripts/sync-claude\.py)' || exit 0
+for PY in python3 python py; do command -v "$PY" >/dev/null 2>&1 && break; done
+command -v "$PY" >/dev/null 2>&1 || { echo "pre-commit: python nao encontrado; .claude/ nao foi sincronizado" >&2; exit 0; }
+echo "pre-commit: sincronizando .claude/ a partir de .agents/ ..."
+"$PY" scripts/sync-claude.py . >/dev/null || { echo "pre-commit: sync-claude falhou" >&2; exit 1; }
+git add .claude CLAUDE.md
+exit 0
