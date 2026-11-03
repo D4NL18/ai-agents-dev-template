@@ -10,7 +10,7 @@ Em projetos grandes, as LLMs tendem a estourar os limites de contexto ao ler cen
 ## Diretrizes Obrigatórias
 1. **O Gatilho:** Quando uma funcionalidade for concluída no Roadmap (Step final do Workflow), o Orquestrador pode usar esta skill para fazer a Compressão de Contexto.
 2. **KNOWLEDGE_GRAPH.md:**
-   - Todo resumo vital (regras de negócio superadas, decisões de arquitetura cruciais, dependências criadas) deve ser extraído dos arquivos alterados e salvo de forma extremamente curta (em formato de bullet points ou JSON minimalista) num arquivo `.agents/context/KNOWLEDGE_GRAPH.md` (ou `MEMORY.md`).
+   - Todo resumo vital (regras de negócio superadas, decisões de arquitetura cruciais, dependências criadas) deve ser extraído dos arquivos alterados e salvo de forma extremamente curta (em formato de bullet points ou JSON minimalista) num arquivo `.agents/docs/KNOWLEDGE_GRAPH.md` (ou `MEMORY.md`).
 3. **Regra do Descarte:**
    - O Context Compressor foca apenas em *decisões definitivas*. Falhas, bugs antigos e rascunhos de código do processo devem ser "esquecidos". Guarde apenas: o que faz a feature, como ela interage com as demais e a regra de negócio central.
 4. **Alimentando o Orquestrador:**
