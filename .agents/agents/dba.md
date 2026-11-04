@@ -15,6 +15,10 @@ subagent: true
 - @.agents/skills/database-architect/SKILL.md
 - @.agents/skills/database-admin/SKILL.md
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Supabase MCP & Skills (`supabase`, `supabase-postgres-best-practices`: migrations, schemas, RLS, indexes)
+- Postgres MCP (`query`)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - @.agents/docs/STATE.md (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em @.agents/rules/ (carregadas por trigger `always_on`, `glob` ou `model_decision`)

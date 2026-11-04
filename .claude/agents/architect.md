@@ -23,6 +23,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, AskUserQuestion
 - `.claude/skills/n8n-deploy/SKILL.md`
 - `.claude/skills/gcp-finops-expert/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- GCP (`gcloud`, `finding-google-skills`: arquitetura e recursos Google Cloud)
+- Supabase (`supabase`, `supabase-postgres-best-practices`: arquitetura BaaS, auth e edge functions)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

@@ -15,6 +15,10 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch, AskUserQuestion
 - `.claude/skills/pm-skills/SKILL.md`
 - `.claude/skills/gemini-deep-research/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- `twg-setup` (Atlassian Teamwork Graph CLI / Jira: rastreamento de tickets e requisitos)
+- Mobbin (`search`, `best-practices`: análise de concorrência e padrões funcionais)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

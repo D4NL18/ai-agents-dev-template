@@ -32,6 +32,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 - `.claude/skills/openai-api-fundamentos/SKILL.md`
 - `.claude/skills/openai-api-chatbot/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Figma (`figma-design-to-code`, `figma-code-connect`: tradução de componentes Figma em código tipado)
+- Supabase (`supabase`, `supabase-postgres-best-practices`: SDK client, geração de types TypeScript e Edge Functions)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

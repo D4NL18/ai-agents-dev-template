@@ -14,6 +14,9 @@ subagent: true
 - @.agents/skills/angular-expert/SKILL.md
 - @.agents/skills/e2e-testing-patterns/SKILL.md
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Chrome DevTools MCP (`a11y-debugging`, `troubleshooting`, `memory-leak-debugging`)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - @.agents/docs/STATE.md (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em @.agents/rules/ (carregadas por trigger `always_on`, `glob` ou `model_decision`)

@@ -13,6 +13,11 @@ tools: Read, Write, Glob, Grep, Bash
 - `.claude/skills/uiux-expert/SKILL.md`
 - `.claude/skills/frontend-lighthouse/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Figma MCP (`get_design_context`, `get_screenshot`: comparação visual com o design aprovado)
+- Mobbin (`best-practices`: conferência contra padrões líderes de mercado)
+- Chrome DevTools MCP (`a11y-debugging`)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

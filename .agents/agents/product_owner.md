@@ -15,6 +15,11 @@ subagent: true
 - @.agents/skills/copywriting/SKILL.md
 - @.agents/skills/ai-seo/SKILL.md
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- `twg-setup` (Atlassian Teamwork Graph CLI / Jira: tickets, backlog, epics, dependências)
+- Mobbin (`search`, `best-practices`: pesquisa de telas e fluxos de mercado como benchmark de produto)
+- Canva (`create-design`, `get-design-feedback`, `export-design`: decks de apresentação e briefs visuais)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - @.agents/docs/STATE.md (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em @.agents/rules/ (carregadas por trigger `always_on`, `glob` ou `model_decision`)

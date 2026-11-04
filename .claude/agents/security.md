@@ -16,6 +16,9 @@ tools: Read, Write, Glob, Grep, Bash, WebFetch
 - `.claude/skills/api-security-best-practices/SKILL.md`
 - `.claude/skills/auth-implementation-patterns/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Supabase Security (`get_advisors`, `query_logs`: auditoria de políticas RLS, vulnerabilidades e permissões)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

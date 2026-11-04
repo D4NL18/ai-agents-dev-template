@@ -34,33 +34,59 @@ Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. `.agents
 > [!IMPORTANT]
 > 1. **Zero chamadas manuais de skills:** o **Orquestrador** (`.claude/agents/orchestrator.md`) classifica a demanda e invoca o subagente correto via ferramenta `Agent`.
 > 2. **Repertório fechado:** cada subagente executa seu **Boot Protocol** e lê apenas os `SKILL.md` homologados para seu domínio (anti context bloat).
-> 3. **Categoria A (Engenharia)** segue a Esteira de 5 Macro-Etapas. **Categoria B (Consultoria)** — finanças, negociação, liderança, LGPD corporativa, governança de IA, inovação, N8N — aciona diretamente o agente auxiliar.
+> 3. **Categoria A (Engenharia)** segue a Esteira de 5 Macro-Etapas **após a Triagem Prévia de Escopo** (abaixo). **Categoria B (Consultoria)** — finanças, negociação, liderança, LGPD corporativa, governança de IA, inovação, N8N — aciona diretamente o agente auxiliar.
+> 4. **Zero execução cega de etapas:** o Orquestrador avalia a demanda ANTES de disparar qualquer agente; etapas e agentes só são acionados se houver real necessidade comprovada.
+
+### Triagem Prévia de Escopo — Matriz por Tipo de Demanda (Categoria A)
+1. **T1: Nova Feature Completa (Full-Stack):** executa as 5 Macro-Etapas com os agentes de domínio aplicáveis.
+2. **T2: Backend Only (API, Service, Regra de Negócio, Query):**
+   - **Bypass Automático:** NÃO passa por `designer` nem `ux-reviewer`. Se não coleta nem manipula dados pessoais (PII), NÃO passa por `privacy-officer`.
+   - Rota: `architect` (se houver novo contrato) → `tester` + `developer` → `reviewer` → `devops`.
+3. **T3: Frontend / UI / CSS / Estilização:**
+   - **Bypass Automático:** NÃO passa por `dba` (sem banco), NÃO passa por `privacy-officer` (sem coleta nova de dados), NÃO passa por `security` dedicado (validação padrão no `reviewer`). Se for ajuste de estilo ou componente existente, dispensa `product-owner` e `analyst`.
+   - Rota: `designer` (se exigir novo mockup) → `developer` → `tester` + `ux-reviewer` → `reviewer`.
+4. **T4: Hotfix / Bugfix Pontual:**
+   - **Bypass Automático:** dispensa PO, Analista, Arquiteto e Designer.
+   - Rota direta: diagnóstico → `tester` (reproduz com teste) → `developer` (corrige) → `reviewer` (validação e commit).
+5. **T5: Database / Migrations Only:**
+   - **Bypass Automático:** dispensa Designer, UX Reviewer e PO/Analista se for técnico.
+   - Rota: `dba` (migration com travas anti-perda) → `developer` (executa/testa) → `reviewer`.
+6. **T6: DevOps / CI/CD / Infra Only:**
+   - **Bypass Automático:** dispensa todas as etapas de produto/código.
+   - Rota direta: `devops` → `reviewer`.
+7. **T7: Refatoração Técnica Interna:**
+   - **Bypass Automático:** dispensa PO, Analista e Designer.
+   - Rota: `developer` + `tester` → `reviewer`.
+
+> As 7 Perguntas de Decisão de Impacto que fundamentam cada bypass estão em `.claude/agents/orchestrator.md` (seção 2). Toda decisão de acionar ou pular agentes é registrada no `.agents/docs/STATE.md`.
 
 ---
 
-## Esteira Consolidada de Desenvolvimento (5 Macro-Etapas)
+## Esteira Consolidada de Desenvolvimento (5 Macro-Etapas · Execução Condicional)
 
-**ETAPA 1 — Descoberta, Escopo e Especificação** (`product-owner` + `analyst`)
+> Cada etapa e cada papel abaixo só é executado se a Triagem Prévia o tornar necessário.
+
+**ETAPA 1 — Descoberta, Escopo e Especificação** (`product-owner` + `analyst`) — *apenas quando houver novo escopo funcional de produto*
 - **PO:** fatia a demanda em User Stories INVEST em `.agents/docs/ROADMAP.md` e marca tarefas paralelizáveis com `[PARALLEL]`.
 - **Analista:** discovery com o usuário, regras `P-XXX` em `.agents/docs/business_rules/<feature>.md`, linguagem ubíqua e escopo inicial em `.agents/docs/tasks/<feature>.md`.
 
-**ETAPA 2 — Arquitetura, UI Design Plan, Modelagem Segura e Privacy by Design** (`architect` + `designer` + `dba` + `ai-specialist` + `privacy-officer`)
+**ETAPA 2 — Arquitetura, UI Design Plan, Modelagem Segura e Privacy by Design** (`architect` + `designer` + `dba` + `ai-specialist` + `privacy-officer`) — *apenas os papéis impactados pela demanda*
 - **Arquiteto:** arquitetura, ADRs (`.agents/docs/adr/`), contratos REST com envelope `data`/`meta` (`.agents/docs/api_contracts/<entidade>.md`) e checklist técnico atômico em `.agents/docs/tasks/<feature>.md`.
 - **Designer (se Frontend):** Design Plan obrigatório em `.agents/docs/design/plans/<feature>.md` via `uiux-expert`, seguindo `DESIGN_SYSTEM.md`, 8 estados interativos e filtro Hallmark Anti-IA (`frontend-ui-anti-patterns.md`).
 - **DBA (se Banco):** Migrations seguras com travas anti-perda de dados, schema em `.agents/docs/db/<modulo>.md` e seeds em `.agents/docs/db/seeds/`.
 - **AI Specialist (se IA):** esteira de ML, RAG, prompts modulares e orquestração de tokens.
-- **Privacy Officer:** Privacy by Design — minimização/anti-overfetching nos contratos, 10 Bases Legais (Art. 7º e 11), Privacy by Default na UI e RIPD/DPIA em `.agents/docs/privacy/` se houver dados sensíveis ou decisões automatizadas de IA.
+- **Privacy Officer (se houver dados pessoais/PII ou decisão automatizada de IA):** Privacy by Design — minimização/anti-overfetching nos contratos, 10 Bases Legais (Art. 7º e 11), Privacy by Default na UI e RIPD/DPIA em `.agents/docs/privacy/` se houver dados sensíveis ou decisões automatizadas de IA.
 - **Checkpoint Obrigatório:** resumo executivo ao usuário e validação antes da Etapa 3 (salvo ordem de execução direta).
 
 **ETAPA 3 — TDD e Execução** (`tester` + `developer` + `ai-specialist`)
 - **Tester (TDD First):** suíte de testes unitários e de contrato ANTES de qualquer lógica produtiva.
 - **Desenvolvedor (+ AI Specialist):** código em branch isolada até os testes passarem, usando tokens do `DESIGN_SYSTEM.md`, Design Plan, contratos de API e `.claude/rules/`; commits via `git-expert` rastreando `P-XXX`.
 
-**ETAPA 4 — Quality Gate 360, Auditorias e Auto-Healer** (`reviewer` + `privacy-officer` + `ux-reviewer` + `security` + `tester`)
+**ETAPA 4 — Quality Gate 360, Auditorias e Auto-Healer** (`reviewer` + `privacy-officer` + `ux-reviewer` + `security` + `tester`) — *auditorias especializadas acionadas por impacto*
 - **Reviewer:** Clean Code, SOLID, complexidade cognitiva, conformidade com `.claude/rules/` e veto a documentação fora de `.agents/docs/`.
-- **Privacy Officer:** Auditoria de Código LGPD (PII em controllers, services, DTOs e logs; isolamento multi-tenant) com **poder de veto imediato**.
+- **Privacy Officer (se PII):** Auditoria de Código LGPD (PII em controllers, services, DTOs e logs; isolamento multi-tenant) com **poder de veto imediato**.
 - **UX Reviewer (se Frontend):** fidelidade ao Design Plan e `DESIGN_SYSTEM.md`, filtro Anti-IA, Skeleton Loaders, Empty States e 8 estados.
-- **Security:** OWASP (Injections, XSS, JWT no localStorage, Indirect Prompt Injection em RAG, secrets expostos) — bloqueia a esteira.
+- **Security (se Auth/Cripto/superfície crítica; caso contrário a checagem básica fica com o `reviewer`):** OWASP (Injections, XSS, JWT no localStorage, Indirect Prompt Injection em RAG, secrets expostos) — bloqueia a esteira.
 - **Tester ↔ Developer (Auto-Healer):** testes e linters; em falha, correção autônoma guiada pelo Stack Trace por até **3 tentativas** antes de escalar ao humano.
 
 **ETAPA 5 — Release, CI/CD, FinOps e Compressão de Contexto** (`devops` + `orchestrator`)
@@ -103,6 +129,24 @@ Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. `.agents
 
 > As descrições de cada skill vivem no frontmatter do respectivo `SKILL.md` (gatilho semântico "Use quando..."); não são duplicadas aqui para evitar context bloat.
 
+### Integrações Externas Opcionais (MCP / plugins — usar somente se disponíveis no ambiente)
+Não fazem parte de `.claude/skills/`; complementam o repertório acima quando o conector/plugin estiver instalado. Na ausência, o agente segue apenas com as skills do template.
+
+| Agente | Integrações Opcionais |
+| :--- | :--- |
+| `orchestrator` | `twg-setup` (Atlassian TWG / Jira) |
+| `product-owner` | `twg-setup` (Jira: backlog, epics), Mobbin (`search`, `best-practices`), Canva (decks e briefs visuais) |
+| `analyst` | `twg-setup` (Jira), Mobbin (benchmark funcional) |
+| `architect` | GCP (`gcloud`, `finding-google-skills`), Supabase (`supabase`, `supabase-postgres-best-practices`) |
+| `designer` | Figma MCP & Skills (`figma-generate-design`, `figma-create-new-file`, `figma-spec`, `figma-use-figjam`, `figma-shaders`, `figma-implement-motion`), Canva MCP & Skills (`edit-design`, `brand-check`, `bulk-create`, `get-design-feedback`, `resize-for-social-media`), Mobbin (`search`, `redesign-screen`, `best-practices`), Stitch MCP |
+| `dba` | Supabase MCP & Skills (migrations, RLS, indexes), Postgres MCP (`query`) |
+| `tester` | Chrome DevTools MCP (`a11y-debugging`, `troubleshooting`, `memory-leak-debugging`) |
+| `developer` | Figma to Code (`figma-design-to-code`, `figma-code-connect`), Supabase (SDK client, types TypeScript, Edge Functions) |
+| `ux-reviewer` | Figma MCP (`get_design_context`, `get_screenshot`), Mobbin (`best-practices`), Chrome DevTools (`a11y-debugging`) |
+| `security` | Supabase Security (`get_advisors`, `query_logs`) |
+| `devops` | GCP (`gcloud`, `google-cloud-recipe-auth`), Supabase Deploy (`apply_migration`, `deploy_edge_function`) |
+| `innovation-consultant` | Canva MCP |
+
 ---
 
 ## Slash Commands (Atalhos Nativos via `.claude/skills/<nome>/`)
@@ -112,9 +156,12 @@ Fluxo obrigatório para qualquer tarefa assistida por IA neste projeto. `.agents
 
 ---
 
-## 1. Regras Anti-Sobrecarga Cognitiva (Context Pruning)
-Para manter a performance de raciocínio da IA impecável e evitar o esgotamento da Janela de Contexto (*Context Window*), aplicam-se obrigatoriamente as seguintes travas de leitura:
+## 1. Regras Anti-Sobrecarga Cognitiva (Context Pruning & Triagem)
+Para manter a performance de raciocínio da IA impecável e evitar o esgotamento da Janela de Contexto (*Context Window*), aplicam-se obrigatoriamente as seguintes travas de leitura e despacho:
 
-- **Leitura Dinâmica (Lazy Loading):** Ao ser ativada, a IA deve carregar na memória APENAS este arquivo (`CLAUDE.md`), o `STATE.md`, e o descritivo do Agente atual em execução (ex: `developer.md`). É expressamente proibido tentar ler toda a pasta `.agents/` ao mesmo tempo.
-- **Firewall de Raciocínio (Isolamento de Domínio):** O **Desenvolvedor** e o **Reviewer** não têm permissão para ler as Regras de Negócio extensas (`.agents/docs/business_rules/`). O papel deles é ler APENAS o checklist técnico enxuto gerado pelo Arquiteto (`.agents/docs/tasks/`). Quem consolida e lê regras de negócio longas é o **Analista** e o **Arquiteto**.
-- **Arquivamento e Limpeza (Archive):** Terminada a Etapa 5 de uma feature, os arquivos daquela task devem ser movidos para `.agents/docs/.archive/`. Agentes são configurados para ignorar solenemente a pasta `.archive/` ao fazerem *scans* na base de código, garantindo que o passado não polua a tarefa atual.
+- **Triagem Prévia de Escopo:** O Orquestrador avalia o escopo e o tipo de demanda (Backend Only, Frontend/UI, Hotfix, DB Only, DevOps, Refactor) ANTES de invocar qualquer agente. É expressamente PROIBIDO acionar agentes ou etapas irrelevantes (ex: mudanças de backend não passam por Designer/UX Reviewer; mudanças de CSS ou refactors técnicos sem dados pessoais não passam por Privacy Officer nem SecOps formal; bugfixes pontuais vão direto para TDD/Fix sem PO/Analista).
+- **Leitura Dinâmica (Lazy Loading):** Ao ser ativada, a IA carrega na memória APENAS este arquivo (`CLAUDE.md`), o `STATE.md`, e o descritivo do Agente atual em execução (ex: `developer.md`). É proibido tentar ler toda a pasta `.agents/` ao mesmo tempo.
+- **Firewall de Raciocínio (Isolamento de Domínio):** O **Desenvolvedor** e o **Reviewer** não leem regras de negócio extensas (`.agents/docs/business_rules/`). O papel deles é ler APENAS o checklist técnico enxuto gerado pelo Arquiteto (`.agents/docs/tasks/`). Quem consolida regras de negócio é o **Analista** e o **Arquiteto**.
+- **Arquivamento e Limpeza (Archive):** Terminada uma feature, os arquivos concluídos daquela task podem ser arquivados em `.agents/docs/.archive/`. Agentes ignoram a pasta `.archive/` em buscas ativas.
+
+---

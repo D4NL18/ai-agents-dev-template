@@ -18,6 +18,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 - `.claude/skills/cloud-devops/SKILL.md`
 - `.claude/skills/geminiignore-finops/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- GCP (`gcloud`, `google-cloud-recipe-auth`)
+- Supabase (`apply_migration`, `deploy_edge_function`: deploy automatizado de persistência)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)

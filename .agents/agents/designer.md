@@ -14,6 +14,11 @@ subagent: true
 - @.agents/skills/animejs-animation/SKILL.md
 - @.agents/skills/image-generator/SKILL.md
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Figma MCP & Skills (`figma-create-new-file`, `figma-generate-design`, `figma-spec`, `figma-use-figjam`, `figma-shaders`, `figma-implement-motion`)
+- Canva MCP & Skills (`edit-design`, `brand-check`, `bulk-create`, `get-design-feedback`, `resize-for-social-media`)
+- Mobbin (`search`, `redesign-screen`, `best-practices`: pesquisa de telas e padrões UI reais)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - @.agents/docs/STATE.md (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em @.agents/rules/ (carregadas por trigger `always_on`, `glob` ou `model_decision`)

@@ -14,6 +14,9 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 - `.claude/skills/angular-expert/SKILL.md`
 - `.claude/skills/e2e-testing-patterns/SKILL.md`
 
+**Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
+- Chrome DevTools MCP (`a11y-debugging`, `troubleshooting`, `memory-leak-debugging`)
+
 **Contexto e artefatos de entrada obrigatórios:**
 - `.agents/docs/STATE.md` (etapa atual da esteira e decisões em andamento)
 - Regras aplicáveis em `.claude/rules/` (carregadas por trigger `always_on`, `glob` ou `model_decision`)
