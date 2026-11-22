@@ -12,6 +12,8 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 **Repertório autorizado (carregar somente as skills pertinentes à tarefa):**
 - `.claude/skills/ai-expert/SKILL.md`
 - `.claude/skills/rag-expert/SKILL.md`
+- `.claude/skills/langchain-expert/SKILL.md`
+- `.claude/skills/langgraph-expert/SKILL.md`
 - `.claude/skills/ml-pipeline-expert/SKILL.md`
 - `.claude/skills/deep-learning-cv-expert/SKILL.md`
 - `.claude/skills/fastapi-ai-expert/SKILL.md`
@@ -67,7 +69,9 @@ O AI Specialist opera **estritamente** dentro do seu repertório homologado de i
 | Skill | Finalidade no Agente |
 | :--- | :--- |
 | **`ai-expert`** | Tokenomics extrema, SentencePiece em inglês conciso, minificação de docstrings de ferramentas, `ToolsDispatcher` dinâmico (economia de 7.500 tokens em mensagens casuais), `PromptComposer` modular, `Token-Budget` dinâmico para histórico, pré-processamento multimodal e cache L1/L2 com SHA-256. |
-| **`rag-expert`** | Arquitetura de busca vetorial e RAG (LangChain LCEL, ChromaDB / pgvector, chunking, embeddings híbridos locais e remotos, e proteção estrita contra *Indirect Prompt Injection*). |
+| **`rag-expert`** | Arquitetura de busca vetorial e RAG (LangChain LCEL, ChromaDB / pgvector / FAISS, chunking semântico, embeddings híbridos locais e remotos, cache, avaliação/monitoramento e proteção estrita contra *Indirect Prompt Injection*). |
+| **`langchain-expert`** | Pipelines com LangChain LCEL, Document Loaders, PromptTemplates compostos, `with_structured_output`/Pydantic, Router Chains, Tools customizadas e execução local com Ollama (`Modelfile`). |
+| **`langgraph-expert`** | Orquestração stateful com `StateGraph`, `TypedDict` + `add_messages`, arestas condicionais, checkpointers (`MemorySaver`), RAG adaptativo por confiança e arquiteturas Multi-Agent (ReAct, Supervisor, Hierárquica). |
 | **`ml-pipeline-expert`** | Modelagem tabular clássica com Scikit-Learn/XGBoost/LightGBM, prevenção contra *Data Leakage*, K-Fold GridSearchCV, calibração com `predict_proba()` e serialização em `.joblib`/`.pkl`. |
 | **`deep-learning-cv-expert`** | Redes Neurais Convolucionais com PyTorch, segmentação semântica com U-Net, transfer learning com ResNet/DenseNet, detecção dinâmica de GPU/CUDA (`torch.device`) e exportação em `.pth`/TorchScript/ONNX. |
 | **`fastapi-ai-expert`** | Microsserviços assíncronos de serving de modelos, carregamento via evento `lifespan` com zero I/O por request, validação com Pydantic v2, streaming SSE e degradação graciosa com fallback. |

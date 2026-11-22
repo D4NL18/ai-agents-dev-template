@@ -100,10 +100,13 @@ def fm_get(fm: str, key: str):
 
 def fm_list(fm: str, key: str):
     m = re.search(rf"^{key}:\s*\n((?:[ \t]+-.*\n?)+)", fm + "\n", re.M)
-    if not m:
-        return []
-    return [re.sub(r"^[ \t]+-\s*", "", ln).strip().strip('"').strip("'")
-            for ln in m.group(1).splitlines() if ln.strip()]
+    if m:
+        return [re.sub(r"^[ \t]+-\s*", "", ln).strip().strip('"').strip("'")
+                for ln in m.group(1).splitlines() if ln.strip()]
+    val = fm_get(fm, key)
+    if val:
+        return [item.strip().strip('"').strip("'") for item in val.split(",") if item.strip()]
+    return []
 
 
 def q(s: str) -> str:

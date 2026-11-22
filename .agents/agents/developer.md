@@ -31,6 +31,8 @@ subagent: true
 - @.agents/skills/n8n-openai/SKILL.md
 - @.agents/skills/openai-api-fundamentos/SKILL.md
 - @.agents/skills/openai-api-chatbot/SKILL.md
+- @.agents/skills/langchain-expert/SKILL.md
+- @.agents/skills/langgraph-expert/SKILL.md
 
 **Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
 - Figma (`figma-design-to-code`, `figma-code-connect`: tradução de componentes Figma em código tipado)
@@ -84,6 +86,8 @@ O Desenvolvedor opera **estritamente** dentro do seu repertório homologado de t
 | **`n8n-google-slack-telegram-supabase`** | Configuração de integrações com Google Workspace, Slack e Telegram no N8N para notificações e bots integrados ao sistema. |
 | **`openai-api-fundamentos`** | Integração com OpenAI API: parâmetros, modelos, autenticação segura com variáveis de ambiente. |
 | **`openai-api-chatbot`** | Implementação de chatbots com streaming, histórico de mensagens e integração com frontend (FastAPI + SSE). |
+| **`langchain-expert`** | Implementação de pipelines LangChain LCEL, Document Loaders, Pydantic outputs, Tools customizadas e integração com OpenAI, HuggingFace e Ollama local. |
+| **`langgraph-expert`** | Implementação de grafos de estado (`StateGraph`), nós resilientes com retry/observabilidade, RAG adaptativo e fluxos Multi-Agent em Python. |
 
 > [!CAUTION]
 > É proibido ao Desenvolvedor carregar skills estratégicas/financeiras (ex: Finanças, Negociação, SAM) ou de modelagem livre de banco sem respeitar as definições do DBA e do Arquiteto.

@@ -22,6 +22,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, AskUserQuestion
 - `.claude/skills/auth-implementation-patterns/SKILL.md`
 - `.claude/skills/n8n-deploy/SKILL.md`
 - `.claude/skills/gcp-finops-expert/SKILL.md`
+- `.claude/skills/langgraph-expert/SKILL.md`
 
 **Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
 - GCP (`gcloud`, `finding-google-skills`: arquitetura e recursos Google Cloud)
@@ -65,6 +66,7 @@ O Arquiteto opera **estritamente** dentro do seu repertório homologado de skill
 | **`n8n-deploy`** | Estratégia de deploy do N8N (Cloud, VPS, Docker, Cloud Run) como parte da arquitetura de automação do sistema. |
 | **`gcp-finops-expert`** | Vertex AI Pipelines, BigQuery ML e Cloud Run para serving de modelos — arquitetura de ML no GCP com foco em FinOps. |
 | **`cloud-architect`** | Arquiteturas de ML end-to-end em AWS (SageMaker), Azure (Azure ML) e GCP (Vertex AI) com pipelines de treinamento e endpoints. |
+| **`langgraph-expert`** | Arquitetura de workflows stateful e sistemas Multi-Agent (4 camadas: Logic, State, Orchestration, Infrastructure; topologias Rede, Supervisor, Hierárquica e Workflow Custom). |
 
 > [!CAUTION]
 > É proibido ao Arquiteto carregar skills de CSS/UI styling ou testes unitários detalhados. Seu foco é puramente arquitetural, estrutural e contratual.
