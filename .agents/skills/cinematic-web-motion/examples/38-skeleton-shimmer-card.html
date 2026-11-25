@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<!--
+  Pattern: Skeleton Shimmer Cards with Zero-CLS Content Crossfade
+  ===============================================================
+  Subtle UI Motion:
+  - Skeleton placeholders use a low-contrast, slow linear-gradient shimmer
+    sweep across zinc surfaces.
+  - Toggling between loading and loaded states crossfades two stacked
+    layers inside the same grid cell (`grid-area: 1 / 1`), guaranteeing
+    identical dimensions and zero cumulative layout shift (CLS).
+
+  How to Adapt:
+  - Keep `.skeleton-layer` and `.content-layer` matched in padding and
+    line structure, or give `.card-stack` a shared min-height.
+  - Toggle `data-loading="true|false"` on `.cards-grid` (or individual
+    cards) as async data resolves.
+  - `prefers-reduced-motion: reduce` stops the shimmer sweep and
+    crossfades immediately.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skeleton Shimmer &amp; Content Crossfade</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-muted: #f4f4f5;
+      --skeleton-base: #e4e4e7;
+      --skeleton-highlight: #f4f4f5;
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --text: #18181b;
+      --text-muted: #71717a;
+      --accent: #18181b;
+      --accent-fg: #fafafa;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration: 240ms;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --surface: #18181b;
+        --surface-muted: #27272a;
+        --skeleton-base: #27272a;
+        --skeleton-highlight: #3f3f46;
+        --border: #27272a;
+        --border-strong: #3f3f46;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --accent: #fafafa;
+        --accent-fg: #18181b;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --duration: 0ms;
+      }
+      .shimmer {
+        animation: none !important;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 48px 16px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toolbar h1 {
+      margin: 0 0 2px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .toolbar p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      appearance: none;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+    }
+
+    .btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn.is-primary {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-color: var(--accent);
+    }
+
+    .btn.is-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 740px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card-stack {
+      display: grid;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .skeleton-layer,
+    .content-layer {
+      grid-area: 1 / 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: opacity var(--duration) var(--ease-out);
+    }
+
+    /* State visibility without layout shift */
+    .cards-grid[data-loading="true"] .skeleton-layer {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .cards-grid[data-loading="true"] .content-layer {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .cards-grid[data-loading="false"] .skeleton-layer {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .cards-grid[data-loading="false"] .content-layer {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Skeleton primitives */
+    .shimmer {
+      background: linear-gradient(
+        90deg,
+        var(--skeleton-base) 0%,
+        var(--skeleton-highlight) 50%,
+        var(--skeleton-base) 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer-sweep 1.6s ease-in-out infinite;
+      border-radius: 6px;
+    }
+
+    @keyframes shimmer-sweep {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .sk-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sk-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .sk-title-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sk-line {
+      height: 12px;
+    }
+
+    .sk-line.sm {
+      height: 10px;
+    }
+
+    .sk-footer {
+      margin-top: auto;
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Real content primitives */
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-body {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="toolbar">
+      <div>
+        <h1>Active Integrations</h1>
+        <p>Zero-CLS skeleton shimmer crossfading into loaded cards.</p>
+      </div>
+      <div class="controls">
+        <button id="toggle-btn" class="btn" type="button">Show Content</button>
+        <button id="reload-btn" class="btn is-primary" type="button">Simulate Reload</button>
+      </div>
+    </header>
+
+    <section id="cards-grid" class="cards-grid" data-loading="true" aria-busy="true">
+      <article class="card-stack">
+        <div class="skeleton-layer" aria-hidden="true">
+          <div class="sk-head">
+            <div class="shimmer sk-avatar"></div>
+            <div class="sk-title-group">
+              <div class="shimmer sk-line" style="width: 65%"></div>
+              <div class="shimmer sk-line sm" style="width: 40%"></div>
+            </div>
+          </div>
+          <div class="shimmer sk-line" style="width: 95%"></div>
+          <div class="shimmer sk-line" style="width: 78%"></div>
+          <div class="sk-footer">
+            <div class="shimmer sk-line sm" style="width: 64px"></div>
+            <div class="shimmer sk-line sm" style="width: 52px"></div>
+          </div>
+        </div>
+        <div class="content-layer">
+          <div class="card-head">
+            <div class="card-icon">WH</div>
+            <div class="card-title-group">
+              <h2 class="card-title">Webhook Relay</h2>
+              <span class="card-subtitle">us-east-1</span>
+            </div>
+          </div>
+          <p class="card-body">Delivers signed event payloads to registered endpoints with automatic retries.</p>
+          <div class="card-footer">
+            <span class="pill">Healthy</span>
+            <span>99.98%</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-stack">
+        <div class="skeleton-layer" aria-hidden="true">
+          <div class="sk-head">
+            <div class="shimmer sk-avatar"></div>
+            <div class="sk-title-group">
+              <div class="shimmer sk-line" style="width: 58%"></div>
+              <div class="shimmer sk-line sm" style="width: 44%"></div>
+            </div>
+          </div>
+          <div class="shimmer sk-line" style="width: 92%"></div>
+          <div class="shimmer sk-line" style="width: 70%"></div>
+          <div class="sk-footer">
+            <div class="shimmer sk-line sm" style="width: 64px"></div>
+            <div class="shimmer sk-line sm" style="width: 52px"></div>
+          </div>
+        </div>
+        <div class="content-layer">
+          <div class="card-head">
+            <div class="card-icon">DB</div>
+            <div class="card-title-group">
+              <h2 class="card-title">Read Replica</h2>
+              <span class="card-subtitle">eu-central-1</span>
+            </div>
+          </div>
+          <p class="card-body">Low-latency read routing for analytical queries and regional dashboard loads.</p>
+          <div class="card-footer">
+            <span class="pill">Synced</span>
+            <span>12 ms lag</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-stack">
+        <div class="skeleton-layer" aria-hidden="true">
+          <div class="sk-head">
+            <div class="shimmer sk-avatar"></div>
+            <div class="sk-title-group">
+              <div class="shimmer sk-line" style="width: 72%"></div>
+              <div class="shimmer sk-line sm" style="width: 36%"></div>
+            </div>
+          </div>
+          <div class="shimmer sk-line" style="width: 88%"></div>
+          <div class="shimmer sk-line" style="width: 82%"></div>
+          <div class="sk-footer">
+            <div class="shimmer sk-line sm" style="width: 64px"></div>
+            <div class="shimmer sk-line sm" style="width: 52px"></div>
+          </div>
+        </div>
+        <div class="content-layer">
+          <div class="card-head">
+            <div class="card-icon">AU</div>
+            <div class="card-title-group">
+              <h2 class="card-title">Audit Stream</h2>
+              <span class="card-subtitle">global</span>
+            </div>
+          </div>
+          <p class="card-body">Immutable security and access logs archived continuously to object storage.</p>
+          <div class="card-footer">
+            <span class="pill">Active</span>
+            <span>4.2k / hr</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div id="load-status" class="sr-only" aria-live="polite">Loading integrations</div>
+  </main>
+
+  <script>
+    (() => {
+      const grid = document.getElementById('cards-grid');
+      const toggleBtn = document.getElementById('toggle-btn');
+      const reloadBtn = document.getElementById('reload-btn');
+      const status = document.getElementById('load-status');
+      let reloadTimer = null;
+
+      function setLoading(isLoading) {
+        grid.dataset.loading = String(isLoading);
+        grid.setAttribute('aria-busy', String(isLoading));
+        toggleBtn.textContent = isLoading ? 'Show Content' : 'Show Skeleton';
+        status.textContent = isLoading ? 'Loading integrations' : 'Integrations loaded';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        clearTimeout(reloadTimer);
+        setLoading(grid.dataset.loading !== 'true');
+      });
+
+      reloadBtn.addEventListener('click', () => {
+        clearTimeout(reloadTimer);
+        setLoading(true);
+        reloadTimer = setTimeout(() => setLoading(false), 1100);
+      });
+    })();
+  </script>
+</body>
+</html>

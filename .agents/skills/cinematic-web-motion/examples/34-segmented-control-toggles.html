@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--
+  Pattern: Segmented Control, Toggle Switches & Selectable Option Cards
+  =====================================================================
+  Subtle UI Motion:
+  - Segmented control uses a single sliding thumb element positioned via
+    translateX() and width measured from the active button, avoiding layout
+    thrash on state changes and staying aligned on resize via ResizeObserver.
+  - Toggle switches animate thumb translation and track fill with a crisp
+    cubic-bezier easing curve.
+  - Selectable radio cards use subtle border-color, surface tint, and
+    checkmark scale/opacity transitions instead of heavy shadows or bounces.
+
+  How to Adapt:
+  - Customize `--accent`, `--surface`, `--border`, and `--radius-*` tokens
+    in `:root` (and `[data-theme="dark"]` / `prefers-color-scheme: dark`).
+  - Listen for the custom `change` events or read `aria-checked` / radio
+    `value` attributes to wire controls into your application state.
+  - Reduced motion is respected via `@media (prefers-reduced-motion: reduce)`
+    and `matchMedia` in JS.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Segmented Control, Toggles &amp; Option Cards</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-muted: #f4f4f5;
+      --surface-hover: #f4f4f5;
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --text: #18181b;
+      --text-muted: #71717a;
+      --accent: #18181b;
+      --accent-fg: #fafafa;
+      --ring: rgba(24, 24, 27, 0.14);
+      --thumb-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.04);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration: 200ms;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --surface: #18181b;
+        --surface-muted: #27272a;
+        --surface-hover: #27272a;
+        --border: #27272a;
+        --border-strong: #3f3f46;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --accent: #fafafa;
+        --accent-fg: #18181b;
+        --ring: rgba(250, 250, 250, 0.16);
+        --thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --duration: 0ms;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: grid;
+      place-items: center;
+      padding: 32px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* 1. Segmented Control */
+    .segmented {
+      position: relative;
+      display: inline-grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 3px;
+      width: 100%;
+    }
+
+    .segmented-thumb {
+      position: absolute;
+      top: 3px;
+      left: 0;
+      height: calc(100% - 6px);
+      background: var(--surface);
+      border-radius: 6px;
+      box-shadow: var(--thumb-shadow);
+      transition: transform var(--duration) var(--ease-out), width var(--duration) var(--ease-out);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .segmented-btn {
+      position: relative;
+      z-index: 1;
+      appearance: none;
+      background: transparent;
+      border: 0;
+      padding: 7px 12px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: color var(--duration) var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .segmented-btn[aria-selected="true"] {
+      color: var(--text);
+    }
+
+    .segmented-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    /* 2. Toggle Switches */
+    .switch-list {
+      display: flex;
+      flex-direction: column;
+      divide-y: 1px solid var(--border);
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .switch-row:first-child {
+      padding-top: 0;
+    }
+
+    .switch-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .switch-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .switch-title {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .switch-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .switch {
+      position: relative;
+      flex-shrink: 0;
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-muted);
+      padding: 0;
+      cursor: pointer;
+      transition: background-color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+
+    .switch[aria-checked="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .switch:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .switch-knob {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--surface);
+      box-shadow: var(--thumb-shadow);
+      transition: transform var(--duration) var(--ease-out), background-color var(--duration) var(--ease-out);
+    }
+
+    .switch[aria-checked="true"] .switch-knob {
+      transform: translateX(16px);
+      background: var(--accent-fg);
+    }
+
+    /* 3. Selectable Radio Option Cards */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 520px) {
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      transition:
+        border-color var(--duration) var(--ease-out),
+        background-color var(--duration) var(--ease-out),
+        box-shadow var(--duration) var(--ease-out);
+    }
+
+    .option-card:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-hover);
+    }
+
+    .option-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .option-card[aria-checked="true"] {
+      border-color: var(--accent);
+      background: var(--surface-muted);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .option-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .option-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .option-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      display: grid;
+      place-items: center;
+      transition: border-color var(--duration) var(--ease-out), background-color var(--duration) var(--ease-out);
+    }
+
+    .option-check svg {
+      width: 10px;
+      height: 10px;
+      stroke: var(--accent-fg);
+      stroke-width: 2.5;
+      fill: none;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity var(--duration) var(--ease-out), transform var(--duration) var(--ease-out);
+    }
+
+    .option-card[aria-checked="true"] .option-check {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .option-card[aria-checked="true"] .option-check svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .option-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status-line {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Workspace Preferences</h1>
+      <p>Segmented view switcher, boolean toggles, and selectable option cards.</p>
+    </header>
+
+    <section class="panel" aria-labelledby="seg-label">
+      <div id="seg-label" class="section-label">View Mode</div>
+      <div class="segmented" role="tablist" aria-label="View Mode">
+        <div class="segmented-thumb" aria-hidden="true"></div>
+        <button class="segmented-btn" role="tab" aria-selected="true" tabindex="0" data-value="overview">Overview</button>
+        <button class="segmented-btn" role="tab" aria-selected="false" tabindex="-1" data-value="activity">Activity</button>
+        <button class="segmented-btn" role="tab" aria-selected="false" tabindex="-1" data-value="metrics">Metrics</button>
+        <button class="segmented-btn" role="tab" aria-selected="false" tabindex="-1" data-value="audit">Audit Log</button>
+      </div>
+      <div class="status-line" id="seg-status" aria-live="polite">Active tab: overview</div>
+    </section>
+
+    <section class="panel" aria-labelledby="toggle-label">
+      <div id="toggle-label" class="section-label">Notifications</div>
+      <div class="switch-list">
+        <div class="switch-row">
+          <div class="switch-copy">
+            <label class="switch-title" for="sw-deploy">Deployment alerts</label>
+            <span class="switch-desc">Notify when a production build finishes or fails.</span>
+          </div>
+          <button id="sw-deploy" class="switch" type="button" role="switch" aria-checked="true">
+            <span class="switch-knob" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="switch-row">
+          <div class="switch-copy">
+            <label class="switch-title" for="sw-digest">Weekly summary</label>
+            <span class="switch-desc">Receive a Monday morning digest of key metrics.</span>
+          </div>
+          <button id="sw-digest" class="switch" type="button" role="switch" aria-checked="false">
+            <span class="switch-knob" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="switch-row">
+          <div class="switch-copy">
+            <label class="switch-title" for="sw-compact">Compact density</label>
+            <span class="switch-desc">Reduce vertical padding across tables and lists.</span>
+          </div>
+          <button id="sw-compact" class="switch" type="button" role="switch" aria-checked="false">
+            <span class="switch-knob" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="radio-label">
+      <div id="radio-label" class="section-label">Environment Tier</div>
+      <div class="option-grid" role="radiogroup" aria-labelledby="radio-label">
+        <button class="option-card" type="button" role="radio" aria-checked="true" tabindex="0" data-tier="standard">
+          <div class="option-top">
+            <span class="option-name">Standard</span>
+            <span class="option-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><polyline points="2.5 6.5 5 9 9.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <span class="option-meta">2 vCPU &middot; 4 GB RAM</span>
+        </button>
+        <button class="option-card" type="button" role="radio" aria-checked="false" tabindex="-1" data-tier="compute">
+          <div class="option-top">
+            <span class="option-name">Compute</span>
+            <span class="option-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><polyline points="2.5 6.5 5 9 9.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <span class="option-meta">4 vCPU &middot; 8 GB RAM</span>
+        </button>
+        <button class="option-card" type="button" role="radio" aria-checked="false" tabindex="-1" data-tier="dedicated">
+          <div class="option-top">
+            <span class="option-name">Dedicated</span>
+            <span class="option-check" aria-hidden="true">
+              <svg viewBox="0 0 12 12"><polyline points="2.5 6.5 5 9 9.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <span class="option-meta">8 vCPU &middot; 16 GB RAM</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      // Segmented control with sliding thumb
+      const segmented = document.querySelector('.segmented');
+      const thumb = segmented.querySelector('.segmented-thumb');
+      const tabs = Array.from(segmented.querySelectorAll('[role="tab"]'));
+      const segStatus = document.getElementById('seg-status');
+
+      function positionThumb(activeTab) {
+        thumb.style.width = `${activeTab.offsetWidth}px`;
+        thumb.style.transform = `translateX(${activeTab.offsetLeft}px)`;
+      }
+
+      function selectTab(tab) {
+        tabs.forEach((btn) => {
+          const isSelected = btn === tab;
+          btn.setAttribute('aria-selected', String(isSelected));
+          btn.tabIndex = isSelected ? 0 : -1;
+        });
+        positionThumb(tab);
+        segStatus.textContent = `Active tab: ${tab.dataset.value}`;
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectTab(tab));
+        tab.addEventListener('keydown', (e) => {
+          let nextIndex = null;
+          if (e.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+          if (e.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (e.key === 'Home') nextIndex = 0;
+          if (e.key === 'End') nextIndex = tabs.length - 1;
+          if (nextIndex !== null) {
+            e.preventDefault();
+            tabs[nextIndex].focus();
+            selectTab(tabs[nextIndex]);
+          }
+        });
+      });
+
+      const initialTab = tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0];
+      positionThumb(initialTab);
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(() => {
+          const current = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+          if (current) positionThumb(current);
+        }).observe(segmented);
+      }
+
+      // Toggle switches
+      document.querySelectorAll('[role="switch"]').forEach((sw) => {
+        sw.addEventListener('click', () => {
+          const next = sw.getAttribute('aria-checked') !== 'true';
+          sw.setAttribute('aria-checked', String(next));
+        });
+      });
+
+      // Selectable radio option cards
+      const radios = Array.from(document.querySelectorAll('[role="radio"]'));
+      function selectRadio(card) {
+        radios.forEach((r) => {
+          const active = r === card;
+          r.setAttribute('aria-checked', String(active));
+          r.tabIndex = active ? 0 : -1;
+        });
+      }
+
+      radios.forEach((card, index) => {
+        card.addEventListener('click', () => selectRadio(card));
+        card.addEventListener('keydown', (e) => {
+          let nextIndex = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextIndex = (index + 1) % radios.length;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') nextIndex = (index - 1 + radios.length) % radios.length;
+          if (nextIndex !== null) {
+            e.preventDefault();
+            radios[nextIndex].focus();
+            selectRadio(radios[nextIndex]);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

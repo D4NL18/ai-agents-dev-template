@@ -100,7 +100,7 @@ Fluxo obrigat√≥rio para qualquer tarefa assistida por IA neste projeto. O diret√
 | `product_owner` | Etapa 1 | `agile-coach`, `pm-skills`, `copywriting`, `ai-seo` |
 | `analyst` | Etapa 1 | `business-rules-expert`, `domain-expert`, `pm-skills`, `gemini-deep-research` |
 | `architect` | Etapa 2 | `api-contract-expert`, `springboot-expert`, `fastapi-expert`, `domain-expert`, `springboot-swagger`, `architecture-patterns`, `architect-review`, `cloud-architect`, `framework-migration-legacy-modernize`, `auth-implementation-patterns`, `n8n-deploy`, `gcp-finops-expert`, `langgraph-expert` |
-| `designer` | Etapa 2 | `uiux-expert`, `animejs-animation`, `image-generator` |
+| `designer` | Etapa 2 | `uiux-expert`, `animejs-animation`, `cinematic-web-motion`, `image-generator` |
 | `dba` | Etapa 2 | `dba-expert`, `springboot-jpa-audit`, `database-architect`, `database-admin` |
 | `privacy_officer` | Etapas 2 e 4 + Auxiliar | `lgpd-privacy-expert` |
 | `ai_specialist` | Etapas 2 e 3 | `ai-expert`, `rag-expert`, `langchain-expert`, `langgraph-expert`, `ml-pipeline-expert`, `deep-learning-cv-expert`, `fastapi-ai-expert`, `mlops-lifecycle-expert`, `gemini-live-api-dev`, `gemini-omni-flash-api`, `hybrid-search-implementation`, `embedding-strategies`, `hugging-face-model-trainer`, `image-generator`, `openai-api-*` (4), `nlp-*` (4), `genai-*` (4), `ga-*` (5), `gcp-finops-expert`, `cloud-architect` |

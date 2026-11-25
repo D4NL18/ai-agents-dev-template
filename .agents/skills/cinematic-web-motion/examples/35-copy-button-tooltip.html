@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+  Pattern: Copy Button with SVG Morph & Contextual Tooltips
+  =========================================================
+  Subtle UI Motion:
+  - Copy button crossfades and scales between a clipboard icon and a
+    checkmark icon with a crisp stroke-dashoffset draw-in on copy.
+  - Contextual tooltips fade and nudge 4px from their trigger direction
+    (top, right, bottom, left) on hover or keyboard focus, and dismiss
+    cleanly on Escape.
+
+  How to Adapt:
+  - Attach `data-copy` (or a target selector) to any button using the
+    `.copy-btn` class; fallback clipboard logic handles non-HTTPS contexts.
+  - Place `data-tooltip="..."` and `data-side="top|right|bottom|left"`
+    on any interactive element; the tooltip element is linked via
+    `aria-describedby` for screen-reader accessibility.
+  - `prefers-reduced-motion: reduce` disables translation and stroke timing.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Copy Button &amp; Contextual Tooltips</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-muted: #f4f4f5;
+      --border: #e4e4e7;
+      --border-strong: #d4d4d8;
+      --text: #18181b;
+      --text-muted: #71717a;
+      --tooltip-bg: #18181b;
+      --tooltip-fg: #fafafa;
+      --success: #16a34a;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration: 180ms;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --surface: #18181b;
+        --surface-muted: #27272a;
+        --border: #27272a;
+        --border-strong: #3f3f46;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --tooltip-bg: #fafafa;
+        --tooltip-fg: #18181b;
+        --success: #4ade80;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --duration: 0ms;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: grid;
+      place-items: center;
+      padding: 32px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .header h1 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Inline code / token row */
+    .code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 8px 8px 12px;
+    }
+
+    .code-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .copy-btn {
+      position: relative;
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      transition:
+        color var(--duration) var(--ease-out),
+        border-color var(--duration) var(--ease-out),
+        background-color var(--duration) var(--ease-out);
+    }
+
+    .copy-btn:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .copy-btn:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 2px;
+    }
+
+    .copy-btn[data-copied="true"] {
+      color: var(--success);
+      border-color: var(--border-strong);
+    }
+
+    .copy-btn svg {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition:
+        opacity var(--duration) var(--ease-out),
+        transform var(--duration) var(--ease-out);
+    }
+
+    .icon-copy {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .icon-check {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+
+    .icon-check path {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20;
+      transition: stroke-dashoffset 220ms var(--ease-out) 40ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-check path {
+        transition: none;
+      }
+    }
+
+    .copy-btn[data-copied="true"] .icon-copy {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+
+    .copy-btn[data-copied="true"] .icon-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .copy-btn[data-copied="true"] .icon-check path {
+      stroke-dashoffset: 0;
+    }
+
+    /* Tooltip showcase */
+    .tooltip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px 0;
+    }
+
+    .trigger-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .ui-btn {
+      appearance: none;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color var(--duration) var(--ease-out), background-color var(--duration) var(--ease-out);
+    }
+
+    .ui-btn:hover {
+      background: var(--surface-muted);
+      border-color: var(--border-strong);
+    }
+
+    .ui-btn:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 2px;
+    }
+
+    .tooltip {
+      position: absolute;
+      z-index: 20;
+      pointer-events: none;
+      white-space: nowrap;
+      padding: 5px 9px;
+      border-radius: 6px;
+      background: var(--tooltip-bg);
+      color: var(--tooltip-fg);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.3;
+      opacity: 0;
+      transition:
+        opacity var(--duration) var(--ease-out),
+        transform var(--duration) var(--ease-out);
+    }
+
+    /* Directional resting & visible offsets */
+    .tooltip[data-side="top"] {
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translate(-50%, 4px);
+    }
+    .tooltip[data-side="bottom"] {
+      top: calc(100% + 7px);
+      left: 50%;
+      transform: translate(-50%, -4px);
+    }
+    .tooltip[data-side="left"] {
+      right: calc(100% + 7px);
+      top: 50%;
+      transform: translate(4px, -50%);
+    }
+    .tooltip[data-side="right"] {
+      left: calc(100% + 7px);
+      top: 50%;
+      transform: translate(-4px, -50%);
+    }
+
+    .tooltip[data-open="true"] {
+      opacity: 1;
+    }
+    .tooltip[data-side="top"][data-open="true"],
+    .tooltip[data-side="bottom"][data-open="true"] {
+      transform: translate(-50%, 0);
+    }
+    .tooltip[data-side="left"][data-open="true"],
+    .tooltip[data-side="right"][data-open="true"] {
+      transform: translate(0, -50%);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Copy Actions &amp; Tooltips</h1>
+      <p>Morphing copy-to-checkmark feedback and directional hover/focus tooltips.</p>
+    </header>
+
+    <section class="panel" aria-labelledby="copy-heading">
+      <div id="copy-heading" class="section-label">CLI &amp; API Tokens</div>
+
+      <div class="code-row">
+        <code class="code-text" id="cmd-1">npx @acme/cli deploy --prod</code>
+        <div class="trigger-wrap">
+          <button
+            class="copy-btn"
+            type="button"
+            data-copy-target="cmd-1"
+            data-tooltip="Copy command"
+            data-tooltip-copied="Copied"
+            data-side="top"
+            aria-label="Copy command"
+          >
+            <svg class="icon-copy" viewBox="0 0 16 16" aria-hidden="true">
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect>
+              <path d="M3.5 10.5H3a1.5 1.5 0 0 1-1.5-1.5V3A1.5 1.5 0 0 1 3 1.5h6A1.5 1.5 0 0 1 10.5 3v.5"></path>
+            </svg>
+            <svg class="icon-check" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3.5 8.5 6.5 11.5 12.5 4.5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="code-row">
+        <code class="code-text" id="cmd-2">sk_live_98f2a1c4e7b03d55a912</code>
+        <div class="trigger-wrap">
+          <button
+            class="copy-btn"
+            type="button"
+            data-copy-target="cmd-2"
+            data-tooltip="Copy API key"
+            data-tooltip-copied="Copied"
+            data-side="top"
+            aria-label="Copy API key"
+          >
+            <svg class="icon-copy" viewBox="0 0 16 16" aria-hidden="true">
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect>
+              <path d="M3.5 10.5H3a1.5 1.5 0 0 1-1.5-1.5V3A1.5 1.5 0 0 1 3 1.5h6A1.5 1.5 0 0 1 10.5 3v.5"></path>
+            </svg>
+            <svg class="icon-check" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3.5 8.5 6.5 11.5 12.5 4.5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="tip-heading">
+      <div id="tip-heading" class="section-label">Directional Tooltips (Hover or Focus)</div>
+      <div class="tooltip-grid">
+        <div class="trigger-wrap">
+          <button class="ui-btn" type="button" data-tooltip="Appears above trigger" data-side="top">Top</button>
+        </div>
+        <div class="trigger-wrap">
+          <button class="ui-btn" type="button" data-tooltip="Appears to the right" data-side="right">Right</button>
+        </div>
+        <div class="trigger-wrap">
+          <button class="ui-btn" type="button" data-tooltip="Appears below trigger" data-side="bottom">Bottom</button>
+        </div>
+        <div class="trigger-wrap">
+          <button class="ui-btn" type="button" data-tooltip="Appears to the left" data-side="left">Left</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="live-region" class="sr-only" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (() => {
+      const liveRegion = document.getElementById('live-region');
+      let tooltipCounter = 0;
+
+      // Initialize contextual tooltips
+      document.querySelectorAll('[data-tooltip]').forEach((trigger) => {
+        const tip = document.createElement('span');
+        const id = `tooltip-${++tooltipCounter}`;
+        tip.id = id;
+        tip.className = 'tooltip';
+        tip.setAttribute('role', 'tooltip');
+        tip.dataset.side = trigger.dataset.side || 'top';
+        tip.dataset.open = 'false';
+        tip.textContent = trigger.dataset.tooltip;
+
+        trigger.setAttribute('aria-describedby', id);
+        trigger.parentElement.appendChild(tip);
+        trigger._tooltipEl = tip;
+
+        const show = () => { tip.dataset.open = 'true'; };
+        const hide = () => { tip.dataset.open = 'false'; };
+
+        trigger.addEventListener('mouseenter', show);
+        trigger.addEventListener('mouseleave', hide);
+        trigger.addEventListener('focus', show);
+        trigger.addEventListener('blur', hide);
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') hide();
+        });
+      });
+
+      // Copy handler with fallback
+      async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }
+
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        let timer = null;
+        btn.addEventListener('click', async () => {
+          const target = document.getElementById(btn.dataset.copyTarget);
+          if (!target) return;
+          try {
+            await copyText(target.textContent.trim());
+            btn.dataset.copied = 'true';
+            if (btn._tooltipEl) {
+              btn._tooltipEl.textContent = btn.dataset.tooltipCopied || 'Copied';
+              btn._tooltipEl.dataset.open = 'true';
+            }
+            liveRegion.textContent = 'Copied to clipboard';
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              btn.dataset.copied = 'false';
+              if (btn._tooltipEl) {
+                btn._tooltipEl.textContent = btn.dataset.tooltip;
+              }
+              liveRegion.textContent = '';
+            }, 1600);
+          } catch {
+            liveRegion.textContent = 'Copy failed';
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -25,6 +25,7 @@ subagent: true
 - @.agents/skills/async-python-patterns/SKILL.md
 - @.agents/skills/frontend-optimistic-mutations/SKILL.md
 - @.agents/skills/frontend-data-contracts/SKILL.md
+- @.agents/skills/cinematic-web-motion/SKILL.md
 - @.agents/skills/framework-migration-code-migrate/SKILL.md
 - @.agents/skills/auth-implementation-patterns/SKILL.md
 - @.agents/skills/n8n-fundamentos/SKILL.md
@@ -80,6 +81,7 @@ O Desenvolvedor opera **estritamente** dentro do seu repertório homologado de t
 | **`frontend-optimistic-mutations`** | Implementação de mutações otimistas com rollback imediato de cache para latência zero percebida na UI. |
 | **`frontend-data-contracts`** | Consumo defensivo de dados na borda da rede no frontend com tipagem estrita anti-overfetching. |
 | **`framework-migration-code-migrate`** | Execução de migração de código entre versões de frameworks e linguagens com scripts automatizados. |
+| **`cinematic-web-motion`** | Implementação de landing pages, animações de scroll (GSAP/ScrollTrigger/Lenis), 3D/WebGL (Three.js/R3F/Spline), shaders e microinterações sutis de UI usando o catálogo de 50 exemplos. |
 | **`auth-implementation-patterns`** | Implementação prática de fluxos de login, tokens JWT, sessões e validação declarativa de permissões. |
 | **`n8n-fundamentos`** | Entendimento de nós, triggers e workflows N8N para integrar automações no contexto de features que requerem pipelines de dados ou notificações. |
 | **`n8n-openai`** | Integração de modelos OpenAI em workflows N8N quando o projeto utiliza automação em vez de backend customizado. |

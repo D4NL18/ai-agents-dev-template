@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sliding Pill Tabs — Subtle UI Motion</title>
+  <!--
+    PATTERN: Sliding Pill / Underline Tabs
+    A clean SaaS tab bar where a single indicator element glides smoothly between tabs.
+    - Motion: Uses getBoundingClientRect() relative to the tablist container and applies
+      CSS `transform: translateX(...)` + `width` over 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      paired with a subtle 160ms panel crossfade.
+    - Accessibility: Full ARIA tablist/tab/tabpanel semantics with roving tabindex and
+      ArrowLeft / ArrowRight / Home / End keyboard navigation.
+    - Adapting: Add or remove <button role="tab"> and matching <section role="tabpanel">
+      pairs; ResizeObserver keeps the indicator aligned if the container resizes.
+  -->
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-subtle: #f4f4f5;
+      --border: #e4e4e7;
+      --text: #18181b;
+      --text-muted: #71717a;
+      --pill-bg: #ffffff;
+      --pill-shadow: 0 1px 3px rgba(9, 9, 11, 0.08), 0 0 0 1px rgba(9, 9, 11, 0.04);
+      --focus: #18181b;
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --surface: #18181b;
+        --surface-subtle: #27272a;
+        --border: #27272a;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --pill-bg: #18181b;
+        --pill-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        --focus: #fafafa;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 20px -6px rgba(9, 9, 11, 0.06);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .mode-toggle input {
+      accent-color: var(--focus);
+      cursor: pointer;
+    }
+
+    /* Tablist: Pill mode (default) */
+    .tablist {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      background: var(--surface-subtle);
+      border-radius: 10px;
+      max-width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tablist::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-indicator {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      height: calc(100% - 8px);
+      background: var(--pill-bg);
+      border-radius: 7px;
+      box-shadow: var(--pill-shadow);
+      pointer-events: none;
+      transition: transform 200ms var(--ease), width 200ms var(--ease);
+      will-change: transform, width;
+    }
+
+    /* Underline variant */
+    .tablist[data-variant="underline"] {
+      background: transparent;
+      padding: 0 0 1px 0;
+      border-radius: 0;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .tablist[data-variant="underline"] .tab-indicator {
+      top: auto;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text);
+      box-shadow: none;
+    }
+
+    .tab-btn {
+      position: relative;
+      z-index: 1;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 150ms ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-btn[aria-selected="true"] {
+      color: var(--text);
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+
+    /* Panels */
+    .panels {
+      position: relative;
+      margin-top: 18px;
+    }
+
+    .tabpanel {
+      display: none;
+      animation: panelFade 160ms var(--ease) both;
+    }
+
+    .tabpanel[data-active="true"] {
+      display: block;
+    }
+
+    @keyframes panelFade {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .panel-heading {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .panel-copy {
+      margin: 0 0 16px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+
+    .setting-meta {
+      color: var(--text-muted);
+      font-size: 12.5px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tab-indicator,
+      .tab-btn {
+        transition: none !important;
+      }
+      .tabpanel {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="card-header">
+      <h1 class="card-title">Workspace Settings</h1>
+      <label class="mode-toggle">
+        <input type="checkbox" id="variant-toggle" />
+        <span>Underline style</span>
+      </label>
+    </div>
+
+    <div class="tablist" id="tablist" role="tablist" aria-label="Workspace settings" data-variant="pill">
+      <div class="tab-indicator" id="tab-indicator" aria-hidden="true"></div>
+      <button class="tab-btn" role="tab" id="tab-general" aria-controls="panel-general" aria-selected="true" tabindex="0">General</button>
+      <button class="tab-btn" role="tab" id="tab-members" aria-controls="panel-members" aria-selected="false" tabindex="-1">Members</button>
+      <button class="tab-btn" role="tab" id="tab-billing" aria-controls="panel-billing" aria-selected="false" tabindex="-1">Billing</button>
+      <button class="tab-btn" role="tab" id="tab-security" aria-controls="panel-security" aria-selected="false" tabindex="-1">Security</button>
+    </div>
+
+    <div class="panels">
+      <section class="tabpanel" id="panel-general" role="tabpanel" aria-labelledby="tab-general" data-active="true">
+        <h2 class="panel-heading">General details</h2>
+        <p class="panel-copy">Configure your workspace name, default region, and notification preferences.</p>
+        <div class="setting-row">
+          <span>Workspace URL</span>
+          <span class="setting-meta">app.example.com/acme</span>
+        </div>
+        <div class="setting-row">
+          <span>Data residency</span>
+          <span class="setting-meta">US East (Virginia)</span>
+        </div>
+      </section>
+
+      <section class="tabpanel" id="panel-members" role="tabpanel" aria-labelledby="tab-members" data-active="false">
+        <h2 class="panel-heading">Team members</h2>
+        <p class="panel-copy">Manage active seats, pending invitations, and role-based permissions.</p>
+        <div class="setting-row">
+          <span>Active seats</span>
+          <span class="setting-meta">14 of 20 used</span>
+        </div>
+        <div class="setting-row">
+          <span>Default invite role</span>
+          <span class="setting-meta">Editor</span>
+        </div>
+      </section>
+
+      <section class="tabpanel" id="panel-billing" role="tabpanel" aria-labelledby="tab-billing" data-active="false">
+        <h2 class="panel-heading">Plan &amp; invoices</h2>
+        <p class="panel-copy">Review your current subscription tier, payment method, and monthly usage.</p>
+        <div class="setting-row">
+          <span>Current plan</span>
+          <span class="setting-meta">Pro · $24 / seat</span>
+        </div>
+        <div class="setting-row">
+          <span>Next invoice</span>
+          <span class="setting-meta">December 1, 2026</span>
+        </div>
+      </section>
+
+      <section class="tabpanel" id="panel-security" role="tabpanel" aria-labelledby="tab-security" data-active="false">
+        <h2 class="panel-heading">Authentication &amp; SSO</h2>
+        <p class="panel-copy">Enforce two-factor authentication, SAML SSO, and session timeout policies.</p>
+        <div class="setting-row">
+          <span>Two-factor requirement</span>
+          <span class="setting-meta">Required for admins</span>
+        </div>
+        <div class="setting-row">
+          <span>Session lifetime</span>
+          <span class="setting-meta">14 days</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const tablist = document.getElementById("tablist");
+      const indicator = document.getElementById("tab-indicator");
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+      const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+      const variantToggle = document.getElementById("variant-toggle");
+
+      function positionIndicator(tab, instant = false) {
+        if (!tab) return;
+        const listRect = tablist.getBoundingClientRect();
+        const tabRect = tab.getBoundingClientRect();
+        const offsetX = tabRect.left - listRect.left + tablist.scrollLeft;
+
+        if (instant) {
+          indicator.style.transition = "none";
+        }
+        indicator.style.width = `${tabRect.width}px`;
+        indicator.style.transform = `translateX(${offsetX}px)`;
+
+        if (instant) {
+          indicator.getBoundingClientRect();
+          indicator.style.transition = "";
+        }
+      }
+
+      function activateTab(nextTab, shouldFocus = false) {
+        const targetId = nextTab.getAttribute("aria-controls");
+
+        tabs.forEach((tab) => {
+          const selected = tab === nextTab;
+          tab.setAttribute("aria-selected", String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+
+        panels.forEach((panel) => {
+          panel.setAttribute("data-active", String(panel.id === targetId));
+        });
+
+        positionIndicator(nextTab);
+        if (shouldFocus) nextTab.focus();
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => activateTab(tab));
+      });
+
+      tablist.addEventListener("keydown", (e) => {
+        const currentIndex = tabs.indexOf(document.activeElement);
+        if (currentIndex === -1) return;
+
+        let nextIndex = null;
+        if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+        else if (e.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        else if (e.key === "Home") nextIndex = 0;
+        else if (e.key === "End") nextIndex = tabs.length - 1;
+
+        if (nextIndex !== null) {
+          e.preventDefault();
+          activateTab(tabs[nextIndex], true);
+        }
+      });
+
+      variantToggle.addEventListener("change", () => {
+        tablist.setAttribute("data-variant", variantToggle.checked ? "underline" : "pill");
+        const active = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+        positionIndicator(active, true);
+      });
+
+      const activeInitial = tabs.find((t) => t.getAttribute("aria-selected") === "true") || tabs[0];
+      positionIndicator(activeInitial, true);
+
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(() => {
+          const active = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+          positionIndicator(active, true);
+        }).observe(tablist);
+      }
+    })();
+  </script>
+</body>
+</html>

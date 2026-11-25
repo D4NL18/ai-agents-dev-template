@@ -12,6 +12,7 @@ subagent: true
 **Repertório autorizado (carregar somente as skills pertinentes à tarefa):**
 - @.agents/skills/uiux-expert/SKILL.md
 - @.agents/skills/animejs-animation/SKILL.md
+- @.agents/skills/cinematic-web-motion/SKILL.md
 - @.agents/skills/image-generator/SKILL.md
 
 **Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
@@ -47,6 +48,7 @@ O Designer opera **estritamente** dentro do seu repertório homologado de skills
 | :--- | :--- |
 | **`uiux-expert`** | Concepção de Design Systems e Design Plans por feature, aplicação das 21 macroestruturas visuais, especificação dos 8 estados de componentes e eliminação de Anti-Patterns de IA (Hallmark Anti-AI-Slop). |
 | **`animejs-animation`** | Orquestração de animações fluidas, timelines complexas, micro-interações de interface e efeitos SVG com Anime.js. |
+| **`cinematic-web-motion`** | Design e direção de motion para landing pages, scrollytelling, 3D/WebGL (Three.js/Spline), microinterações sutis de produto/SaaS, `DESIGN.md` e catálogo com 50 componentes de referência. |
 | **`image-generator`** | Concepção e geração multimodal de assets visuais, mockups e referências gráficas com o modelo Gemini Nano Banana Pro (`gemini-3-pro-image-preview`). |
 
 > [!CAUTION]

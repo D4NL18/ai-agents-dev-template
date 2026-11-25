@@ -11,6 +11,7 @@ subagent: true
 
 **Repertório autorizado (carregar somente as skills pertinentes à tarefa):**
 - @.agents/skills/uiux-expert/SKILL.md
+- @.agents/skills/cinematic-web-motion/SKILL.md
 - @.agents/skills/frontend-lighthouse/SKILL.md
 
 **Integrações opcionais (usar somente se disponíveis no ambiente; não substituem o repertório acima):**
@@ -43,6 +44,7 @@ O UX Reviewer opera **estritamente** dentro do seu repertório homologado de des
 | Skill | Finalidade no Agente |
 | :--- | :--- |
 | **`uiux-expert`** | Auditoria estética minuciosa, validação dos 8 estados de componentes, verificação de Skeleton Loaders Shimmer, Empty States amigáveis e aplicação impiedosa do filtro Anti-IA Slop (`frontend-ui-anti-patterns.md`). |
+| **`cinematic-web-motion`** | Auditoria de motion, curvas de easing, contenção em microinterações sutis, fallbacks de `prefers-reduced-motion`, responsividade mobile e performance de 3D/scroll. |
 | **`frontend-lighthouse`** | Auditoria e enforcement de métricas Core Web Vitals (LCP, CLS, INP) e qualidade de assets via Lighthouse CI. |
 
 > [!CAUTION]
