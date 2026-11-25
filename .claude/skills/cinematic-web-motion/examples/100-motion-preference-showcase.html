@@ -51,8 +51,7 @@ aside p{margin-bottom:1rem;max-width:36ch}
 html[data-motion=calm] .card{animation:fade .6s var(--ease) both}
 html[data-motion=calm] .card:hover{transform:none;box-shadow:none;background:var(--sand)}
 html[data-motion=calm] .badge{animation:none}
-html[data-motion=calm] .marq div{animation:none;transform:none}
-html[data-motion=calm] .marq{white-space:normal}
+html[data-motion=calm] .marq div{animation:none;transform:none;display:block;overflow:hidden;text-overflow:ellipsis}
 html[data-motion=calm] .knob,html[data-motion=calm] .knob::after{transition:none}
 @media (prefers-reduced-motion:reduce){
   html:not([data-motion=full]) .card{animation:fade .6s var(--ease) both}

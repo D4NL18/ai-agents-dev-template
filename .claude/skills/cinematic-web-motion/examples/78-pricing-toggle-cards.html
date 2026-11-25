@@ -26,7 +26,7 @@ h1{font:600 clamp(2.2rem,5.5vw,4rem)/1 Georgia,"Iowan Old Style",serif;letter-sp
 .sw button[aria-checked=true]::after{transform:translateX(28px);background:var(--acc)}
 .sw button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
 .save{font:700 .72rem ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--sage);color:var(--sage);padding:.2rem .5rem}
-.grid{display:grid;grid-template-columns:1fr 1.45fr .9fr;align-items:end;gap:0}
+.grid{display:grid;grid-template-columns:1fr 1.45fr .9fr;align-items:stretch;gap:0;margin:3rem 0 1.5rem}
 .plan{padding:2rem 1.6rem;border:1px solid var(--line);margin-left:-1px}
 .plan h2{font:600 1.5rem Georgia,serif;margin-bottom:.3rem}
 .plan p{color:var(--mute);font-size:.92rem;min-height:3em}
@@ -34,14 +34,14 @@ h1{font:600 clamp(2.2rem,5.5vw,4rem)/1 Georgia,"Iowan Old Style",serif;letter-sp
 .price small{font:500 .85rem "Helvetica Neue",sans-serif;color:var(--mute)}
 .plan ul{list-style:none;padding:0;margin:1rem 0 1.5rem;font-size:.9rem}
 .plan li{padding:.35rem 0;border-top:1px dotted var(--line)}
-.plan.hot{background:var(--ink);color:var(--paper);padding:3.4rem 2.2rem;margin-bottom:0;transform:translateY(-1.5rem);border-color:var(--ink)}
+.plan.hot{background:var(--ink);color:var(--paper);padding:3.4rem 2.2rem;margin:-1.5rem 0;position:relative;z-index:1;border-color:var(--ink)}
 .plan.hot p,.plan.hot .price small{color:#d6ccb8}.plan.hot li{border-color:#5b544a}
 .tag{display:inline-block;background:var(--acc);color:#fff;font:700 .7rem ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .55rem;margin-bottom:.8rem}
 .btn{display:inline-block;border:1px solid currentColor;padding:.65rem 1.1rem;font-weight:600;color:inherit;background:none;cursor:pointer;transition:background .25s var(--e),color .25s var(--e),transform .25s var(--e)}
 .btn:hover{background:var(--acc);border-color:var(--acc);color:#fff;transform:translateX(4px)}
 .btn:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
 .hot .btn:focus-visible{outline-color:var(--paper)}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.plan.hot{transform:none}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.plan.hot{margin:0}}
 @media (prefers-reduced-motion:reduce){.sw button::after,.btn{transition:none}.btn:hover{transform:none}}
 </style>
 </head>
@@ -71,10 +71,10 @@ h1{font:600 clamp(2.2rem,5.5vw,4rem)/1 Georgia,"Iowan Old Style",serif;letter-sp
   var nums=[].slice.call(document.querySelectorAll("[data-base]"));
   function target(n){var b=+n.getAttribute("data-base");return yearly?Math.round(b*CONFIG.YEAR_FACTOR/12):b}
   function roll(n,to){
-    var from=+n.textContent,t0=null;
+    var from=+n.textContent,t0=null,id=n._id=(n._id||0)+1;
     if(reduce){n.textContent=to;return}
     function step(t){
-      if(!t0)t0=t;var p=Math.min((t-t0)/CONFIG.DUR,1),k=1-Math.pow(1-p,3);
+      if(id!==n._id)return;if(!t0)t0=t;var p=Math.min((t-t0)/CONFIG.DUR,1),k=1-Math.pow(1-p,3);
       n.textContent=Math.round(from+(to-from)*k);
       if(p<1)requestAnimationFrame(step);
     }

@@ -8,7 +8,7 @@
 PATTERN: Two stacked layers carry the same headline. The top layer is the "surface" claim; a
   radial-gradient mask around the pointer cuts a hole that reveals the hidden second layer
   (the fine print, in a different colour).
-Motion: CSS mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), transparent, #000).
+Motion: CSS mask-image: radial-gradient(circle var(--r) at calc(var(--x) + 2vw) var(--y), transparent, #000).
   Pointer position is eased toward the target in rAF; radius grows on enter, shrinks on leave.
 Accessibility: The revealed text is real DOM text, always readable by assistive tech (hidden layer
   is not aria-hidden; surface layer is aria-hidden to avoid double reading). A visible "Show fine
@@ -26,7 +26,7 @@ h1{font:700 .75rem ui-monospace,monospace;letter-spacing:.18em;text-transform:up
 .stage:focus-visible{outline:3px solid var(--wine);outline-offset:8px}
 .layer{position:absolute;inset:0;padding:1rem 0;font:700 clamp(2rem,7vw,5.2rem)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.03em}
 .layer small{display:block;margin-top:1.2rem;font:500 1rem/1.5 "Helvetica Neue",Arial,sans-serif;letter-spacing:0;max-width:32ch}
-.top{color:var(--ink);-webkit-mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),transparent 98%,#000 100%);mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),transparent 98%,#000 100%)}
+.top{background:var(--paper);color:var(--ink);margin:0 -2vw;padding:1rem 2vw;-webkit-mask-image:radial-gradient(circle var(--r) at calc(var(--x) + 2vw) var(--y),transparent 98%,#000 100%);mask-image:radial-gradient(circle var(--r) at calc(var(--x) + 2vw) var(--y),transparent 98%,#000 100%)}
 .under{background:var(--wine);color:var(--gold);margin:0 -2vw;padding:1rem 2vw}
 .stage.all .top{opacity:0}
 .stage.all .under{opacity:1}

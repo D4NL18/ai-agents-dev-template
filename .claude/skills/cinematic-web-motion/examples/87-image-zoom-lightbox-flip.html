@@ -34,7 +34,7 @@ h1{font:600 clamp(2.2rem,6vw,4.4rem)/1 var(--serif);letter-spacing:-.03em}
 svg{display:block;width:100%;height:100%;transition:transform .5s var(--ease)}
 #lb{position:fixed;inset:0;z-index:9;display:none;align-items:center;justify-content:center}
 #lb.on{display:flex}
-.scrim{position:absolute;inset:0;background:#1c1915ee}
+.scrim{position:absolute;inset:0;background:#1c1915f5}
 figure{position:relative;width:min(86vw,calc(76vh*1.3333));aspect-ratio:4/3;transform-origin:0 0}
 figure svg{width:100%;height:100%}
 .bar{position:absolute;left:0;right:0;bottom:3vh;display:flex;gap:.6rem;justify-content:center;align-items:center;color:var(--paper);font-size:.9rem}
@@ -96,7 +96,7 @@ figure svg{width:100%;height:100%}
   }
   function close(){
     if(busy)return;
-    function done(){lb.classList.remove("on");pg.removeAttribute("aria-hidden");busy=false;thumbs[cur].focus()}
+    function done(){fig.getAnimations().concat(scrim.getAnimations()).forEach(function(a){a.cancel()});lb.classList.remove("on");pg.removeAttribute("aria-hidden");busy=false;thumbs[cur].focus()}
     if(reduce)return done();
     busy=true;
     var d=delta(thumbs[cur].getBoundingClientRect(),fig.getBoundingClientRect());

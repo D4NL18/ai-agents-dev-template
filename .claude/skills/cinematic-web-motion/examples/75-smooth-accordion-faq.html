@@ -29,14 +29,14 @@ h2{font-size:1rem}
 .q:hover{padding-left:.7rem}
 :focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .g{flex:none;width:1.4rem;height:1.4rem;position:relative}
-.g::before,.g::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--fg);transition:transform .35s var(--ease)}
+.g::before,.g::after{content:"";position:absolute;left:0;right:0;top:calc(50% - 1px);height:2px;background:var(--fg);transition:transform .35s var(--ease)}
 .g::after{transform:rotate(90deg)}
 .q[aria-expanded=true] .g::after{transform:rotate(0)}
 .p{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .4s var(--ease),visibility 0s .4s}
-.q[aria-expanded=true]+.p{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .4s var(--ease),visibility 0s}
+.item.open .p{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .4s var(--ease),visibility 0s}
 .p>div{min-height:0;overflow:hidden}
 .p p{padding:0 2.6rem 1.3rem .2rem;line-height:1.6;color:var(--mut);opacity:0;transition:opacity .3s var(--ease)}
-.q[aria-expanded=true]+.p p{opacity:1;transition-delay:.12s}
+.item.open .p p{opacity:1;transition-delay:.12s}
 @media (max-width:760px){body{grid-template-columns:1fr;gap:2rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -55,8 +55,8 @@ h2{font-size:1rem}
   var qs=[].slice.call(document.querySelectorAll(".q"));
   function toggle(b){
     var open=b.getAttribute("aria-expanded")==="true";
-    if(CONFIG.SINGLE)qs.forEach(function(o){o.setAttribute("aria-expanded","false")});
-    b.setAttribute("aria-expanded",String(!open));
+    if(CONFIG.SINGLE)qs.forEach(function(o){o.setAttribute("aria-expanded","false");o.closest(".item").classList.remove("open")});
+    b.setAttribute("aria-expanded",String(!open));b.closest(".item").classList.toggle("open",!open);
   }
   qs.forEach(function(b,i){
     b.addEventListener("click",function(){toggle(b)});

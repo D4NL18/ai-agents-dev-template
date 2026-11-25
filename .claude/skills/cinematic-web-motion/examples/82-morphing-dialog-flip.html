@@ -70,7 +70,7 @@ h1{font:600 clamp(2rem,5vw,3.6rem)/1.05 Georgia,"Iowan Old Style",serif;letter-s
     document.getElementById("dt").textContent=card.getAttribute("data-t");
     document.getElementById("db").textContent=card.getAttribute("data-b");
     var first=card.getBoundingClientRect();
-    dlg.classList.add("on");scrim.classList.add("on");
+    dlg.classList.add("on");scrim.classList.add("on");card.style.visibility="hidden";
     var last=dlg.getBoundingClientRect();
     if(!reduce){var a=play(delta(first,last),false);a.onfinish=function(){a.cancel();dlg.classList.add("show")}}
     else dlg.classList.add("show");
@@ -80,7 +80,7 @@ h1{font:600 clamp(2rem,5vw,3.6rem)/1.05 Georgia,"Iowan Old Style",serif;letter-s
     if(!origin)return;
     var card=origin;origin=null;
     scrim.classList.remove("on");dlg.classList.remove("show");
-    function done(){dlg.classList.remove("on");card.focus()}
+    function done(){dlg.classList.remove("on");card.style.visibility="";card.focus()}
     if(reduce){done();return}
     var d=delta(card.getBoundingClientRect(),dlg.getBoundingClientRect());
     play(d,true).onfinish=done;

@@ -30,20 +30,20 @@ li{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);transit
 li[data-dir=r] .a,li[data-dir=l] .d{opacity:1}
 li[data-dir=r]{background:var(--moss);color:#fff}
 li[data-dir=l]{background:var(--rust);color:#fff}
-.row{position:relative;background:var(--paper);display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:1.1rem .4rem;touch-action:pan-y;cursor:grab;user-select:none}
+.row{position:relative;background:var(--paper);color:var(--ink);display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:1.1rem .4rem;touch-action:pan-y;cursor:grab;user-select:none}
 .row h2{font:600 1.15rem/1.2 var(--serif)}
 .row p{font-size:.85rem;margin-top:.25rem;color:#5a5348}
 .btns{display:flex;gap:.4rem;flex:none}
 button{font:600 .78rem var(--sans);padding:.5rem .7rem;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:background .2s var(--ease),color .2s}
 button:hover{background:var(--ink);color:var(--paper)}
 button:focus-visible{outline:3px solid var(--rust);outline-offset:2px}
-.toast{position:fixed;left:12vw;bottom:5vh;display:flex;gap:1rem;align-items:center;background:var(--ink);color:var(--paper);padding:.8rem 1rem;transform:translateY(160%);transition:transform .4s var(--ease)}
-.toast.on{transform:none}
+.toast{position:fixed;left:12vw;bottom:5vh;display:flex;gap:1rem;align-items:center;background:var(--ink);color:var(--paper);padding:.8rem 1rem;transform:translateY(calc(100% + 8vh));visibility:hidden;transition:transform .4s var(--ease),visibility 0s .4s;z-index:5}
+.toast.on{transform:none;visibility:visible;transition:transform .4s var(--ease),visibility 0s}
 .toast button{border-color:var(--paper);color:var(--paper)}
 .toast button:hover{background:var(--paper);color:var(--ink)}
 .toast button:focus-visible{outline-color:var(--paper)}
 .empty{display:none;padding:2rem 0;font:italic 1.2rem var(--serif)}
-@media (prefers-reduced-motion:reduce){li,.toast,button{transition:none}}
+@media (prefers-reduced-motion:reduce){li,.toast,button{transition:none!important}}
 </style>
 </head>
 <body>
@@ -108,7 +108,7 @@ button:focus-visible{outline:3px solid var(--rust);outline-offset:2px}
     if(!last)return;var li=last.li;
     list.insertBefore(li,last.next&&last.next.parentNode===list?last.next:null);
     li.querySelector(".row").style.transform="";delete li.dataset.dir;
-    li.style.height=li.scrollHeight+"px";li.style.opacity="1";
+    li.style.height="0px";li.style.opacity="0";li.offsetHeight;li.style.height=li.scrollHeight+"px";li.style.opacity="1";
     setTimeout(function(){li.style.height=""},CONFIG.DURATION);
     empty.style.display="none";toast.classList.remove("on");last=null;
     li.querySelector("button").focus();

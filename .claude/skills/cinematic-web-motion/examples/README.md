@@ -1,4 +1,4 @@
-# Component & Effect Gallery (100 standalone HTML demos)
+# Component & Effect Gallery (150 standalone HTML demos)
 
 Open any file in a browser (internet needed for CDN libs). No image/model assets required. All handle `prefers-reduced-motion` (or graceful fallback).
 Status: JS syntax-checked with `node --check` (all pass). Components `01, 06, 08, 13, 19, 24` were browser-verified via local HTTP server (HTTP 200, 0 console/network errors).
@@ -135,6 +135,79 @@ Status: JS syntax-checked with `node --check`; not yet browser-verified. Referen
 | 98 | `98-3d-scroll-tunnel.html` | CSS 3D tunnel driven by scroll | none |
 | 99 | `99-spotlight-mask-reveal.html` | Cursor mask revealing a hidden layer | none |
 | 100 | `100-motion-preference-showcase.html` | Live reduce-motion switch showcase | none |
+
+## Full sections, scroll & on-screen motion (101–150)
+Status: browser-checked with Playwright (Edge headless) for console errors, 390px overflow and scroll screenshots; motion was inspected from stills, not played back. Fonts are system serif/sans stacks.
+
+### Scroll storytelling sections (101–110)
+| # | File | Effect | Libs |
+|---|---|---|---|
+| 101 | `101-pinned-chapters-crossfade.html` | Pinned stage with four chapters that crossfade while the scroll position scrubs a single timeline (story-chapter section) | GSAP |
+| 102 | `102-scroll-zoom-through-hero.html` | Zoom-through hero | GSAP |
+| 103 | `103-sticky-split-text-media.html` | Split layout | GSAP |
+| 104 | `104-parallax-depth-landing.html` | Full landing with five depth layers (sky, far ridge, giant type, mid ridge, near ridge) that travel at different speeds, so the headline sit… | GSAP |
+| 105 | `105-scroll-canvas-frame-hero.html` | Frame-sequence hero without any assets | none |
+| 106 | `106-color-chapters-background-shift.html` | Scroll-linked colour chapters | none |
+| 107 | `107-stats-count-section-reveal.html` | Report-style stats sequence | none |
+| 108 | `108-giant-type-marquee-scroll-hero.html` | Festival hero made of four giant headline lines | none |
+| 109 | `109-svg-route-map-scroll.html` | Itinerary map | none |
+| 110 | `110-horizontal-scroll-showcase-section.html` | Pinned horizontal product showcase | GSAP |
+
+### Hero sections & intros (111–120)
+| # | File | Effect | Libs |
+|---|---|---|---|
+| 111 | `111-hero-text-mask-reveal.html` | Hero de texto-máscara | none |
+| 112 | `112-hero-diagonal-split-reveal.html` | Hero partido em diagonal | none |
+| 113 | `113-hero-css3d-scene-tilt.html` | Cena em camadas com profundidade real (CSS 3D) | none |
+| 114 | `114-hero-cursor-spotlight-grid.html` | Grade de células acesas por proximidade do cursor sob uma manchete enorme | none |
+| 115 | `115-hero-typewriter-scroll-handoff.html` | Manchete que se digita sozinha e, ao rolar, é "entregue" à seção seguinte | none |
+| 116 | `116-hero-shader-gradient-headline.html` | Campo de gradiente em WebGL cru (fragment shader com domain warping de simplex noise) sob uma manchete em serifa | none |
+| 117 | `117-hero-orbit-rings-title.html` | Anéis concêntricos girando ao redor do título, como o diagrama de órbitas de um observatório | none |
+| 118 | `118-hero-curtain-open-on-load.html` | Cortinas de teatro que se abrem ao carregar | none |
+| 119 | `119-hero-kinetic-typography-scroll.html` | Tipografia cinética guiada pela rolagem, como um cartaz que demonstra "eixos" de uma fonte variável | none |
+| 120 | `120-hero-title-shrink-to-nav.html` | Título gigante que, ao rolar, encolhe e viaja até virar a marca de uma barra de navegação compacta e fixa | none |
+
+### Content sections (121–130)
+| # | File | Effect | Libs |
+|---|---|---|---|
+| 121 | `121-features-sticky-stack-sections.html` | Full-page "how we work" section where each chapter is a sticky full-height panel that slides up and stacks over the previous one (card-deck … | GSAP |
+| 122 | `122-testimonials-scroll-wall.html` | A "wall of quotes" section: four columns of testimonial cards that drift at different speeds and in opposite directions while the page scrol… | GSAP |
+| 123 | `123-pricing-scroll-reveal-section.html` | Pricing told as a story for a pottery studio: a sticky left column narrates "how often will you come?" while three plans of deliberately dif… | GSAP |
+| 124 | `124-case-study-horizontal-cards.html` | Portfolio section for an architecture office | GSAP |
+| 125 | `125-team-hover-reveal-section.html` | Editorial team index for a small veterinary practice: oversized names in a ruled list; hovering (or keyboard-focusing) a row floats a portra… | GSAP |
+| 126 | `126-faq-split-sticky-section.html` | Split FAQ for a heat pump installer: a sticky intro on the left (title, phone number, live "question N of 8" counter and a progress rule) an… | GSAP |
+| 127 | `127-process-steps-scroll-line.html` | "How a commission works" for a bespoke furniture workshop: a vertical line runs down the page and draws itself as the reader progresses; eac… | GSAP |
+| 128 | `128-gallery-masonry-parallax.html` | Masonry gallery of glaze test tiles from a ceramics studio | GSAP |
+| 129 | `129-timeline-vertical-draw.html` | Company history for a family brewery, 1887 to 2024 | GSAP |
+| 130 | `130-logo-wall-stagger-section.html` | "Who we have worked with" client wall for a freight-forwarding firm: five ruled rows of typographic wordmarks (fictional clients) | GSAP |
+
+### Scroll mechanics, whole-page (131–140)
+| # | File | Effect | Libs |
+|---|---|---|---|
+| 131 | `131-section-clip-path-wipe-transitions.html` | Pinned stage where every chapter wipes over the previous one with a different clip-path shape (circle, bottom inset, diagonal polygon, ellip… | none |
+| 132 | `132-scroll-snap-fullpage-sections.html` | Full-screen sections with native CSS scroll-snap, a side dot navigation and a staggered entrance per section | none |
+| 133 | `133-custom-smooth-scroll-lerp.html` | Hand-written smooth scroll without Lenis: fixed content wrapper translated by a lerped value, body height mirrors the content height so the … | none |
+| 134 | `134-scroll-velocity-skew-section.html` | Page content reacts to scroll speed: sections skew and stretch while you scroll fast and spring back to rest when you stop | none |
+| 135 | `135-scroll-linked-text-gradient-fill.html` | Reading-progress typography: a manifesto fills with colour word by word, and a second statement fills line by line with a scrubbed hard-edge… | none |
+| 136 | `136-css-frame-sequence-scrub.html` | Scroll-scrubbed "frame sequence" without any image or video assets: a harbour at dawn drawn in inline SVG, with every element keyframed agai… | none |
+| 137 | `137-direction-aware-header-page.html` | Site header that hides when scrolling down, returns on any upward scroll, shrinks after the first screen, and re-themes itself to match whic… | none |
+| 138 | `138-parallax-footer-reveal.html` | The page content slides up like a curtain and uncovers a fixed, giant-type footer that sits underneath it | none |
+| 139 | `139-scroll-progress-chapter-nav.html` | Long-read page with a fixed chapter navigation: each chapter has its own progress bar that fills as you read through it, the current chapter… | none |
+| 140 | `140-css-animation-timeline-sections.html` | Whole page choreographed in pure CSS with scroll-driven animations: animation-timeline: scroll(root) for the progress bar and hero zoom, ani… | none |
+
+### Immersive sections, CTA & footer (141–150)
+| # | File | Effect | Libs |
+|---|---|---|---|
+| 141 | `141-cards-depth-scroll-section.html` | Immersive section where a stack of cards sits along the Z axis of a perspective stage | none |
+| 142 | `142-threejs-scroll-camera-flythrough.html` | A procedural low-poly landscape (valley, pines, a small city at the end) is rendered fixed behind the page | three |
+| 143 | `143-footer-giant-type-reveal.html` | Closing sequence of a page: a short CTA band, then the main content slides away like a curtain to reveal a fixed footer whose giant wordmark… | none |
+| 144 | `144-cta-big-section-magnetic.html` | Closing call-to-action section built around huge type, a magnetic button and a background grid of dots that swell and push away from the cur… | none |
+| 145 | `145-preloader-to-hero-handoff.html` | A percentage counter fills the screen while assets "load"; at 100 the very same element swaps to the brand word and flies (FLIP) into the he… | none |
+| 146 | `146-section-to-section-page-transition.html` | A one-screen-at-a-time site | none |
+| 147 | `147-marquee-gallery-scroll-section.html` | A gallery section of three rows of poster cards that drift sideways on their own and are also pushed by scroll, each row in alternating dire… | none |
+| 148 | `148-cursor-reactive-grid-section.html` | A full-section grid of tiles, each holding a wind-vector needle | none |
+| 149 | `149-svg-morph-scroll-section.html` | One SVG path morphs through four shapes (boule, baguette, pan loaf, croissant) as you scroll through four stages of a sticky section | none |
+| 150 | `150-end-credits-scroll-section.html` | A cinematic end-credits roll bound to scroll | none |
 
 ## Mapping to the reels
 - Floating product (reels 3/sneaker) -> `01`, `02`

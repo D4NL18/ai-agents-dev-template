@@ -36,13 +36,13 @@ h1{font:600 clamp(2rem,4.5vw,3.2rem)/1.05 Georgia,"Iowan Old Style",serif;letter
 .b{height:14px;background:linear-gradient(100deg,var(--sk) 30%,#efe7d5 50%,var(--sk) 70%) 200% 0/250% 100%;animation:sh 1.4s linear infinite}
 .b.sq{height:64px}.b.w{width:70%}.b.s{width:45%;margin-top:.6rem}
 @keyframes sh{to{background-position:-50% 0}}
-.id{font:700 .85rem ui-monospace,monospace;border:1px solid var(--ink);padding:.5rem;text-align:center}
+.id{font:700 .85rem ui-monospace,monospace;border:1px solid var(--ink);padding:.5rem .3rem;text-align:center;white-space:nowrap}
 .card h2{font:600 1.15rem Georgia,serif}
 .card p{color:var(--mute);font-size:.9rem}
 .state{font-weight:700;font-size:.85rem}
 .state::before{content:attr(data-i) " "}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-@media(max-width:560px){.card,.sk{grid-template-columns:70px 1fr}.card .state,.sk .b:last-child{display:none}}
+@media(max-width:560px){.card,.sk{grid-template-columns:84px 1fr}.card .state,.sk .b:last-child{display:none}}
 @media (prefers-reduced-motion:reduce){.b{animation:none}.real>*,.sk{transition:none}.real>*{transform:none}}
 </style>
 </head>

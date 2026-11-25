@@ -29,11 +29,12 @@ p{color:var(--mut);line-height:1.55;max-width:40ch;margin-bottom:1.6rem}
 #sh{position:fixed;left:0;right:0;bottom:0;height:90vh;max-width:34rem;margin:0 auto;background:var(--sheet);color:var(--fg);font-family:"Segoe UI",Helvetica,sans-serif;border-radius:14px 14px 0 0;padding:.4rem 1.4rem 2rem;transform:translateY(100%);visibility:hidden;transition:transform .45s var(--ease),visibility 0s .45s;touch-action:none}
 #sh.on{visibility:visible;transition:transform .45s var(--ease)}
 #sh.drag{transition:none}
-#hd{display:block;width:100%;background:none;border:0;padding:.7rem 0 1rem;cursor:grab;display:flex;flex-direction:column;align-items:center;gap:.4rem;font:600 .72rem ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+#hd{width:100%;background:none;border:0;padding:.7rem 0 1rem;margin-bottom:.3rem;cursor:grab;display:flex;flex-direction:column;align-items:center;gap:.4rem;font:600 .72rem ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
 #hd i{display:block;width:44px;height:5px;border-radius:3px;background:var(--line)}
 #sh h2{font-family:Georgia,serif;font-weight:400;font-size:1.7rem;margin-bottom:.5rem}
 #sh li{list-style:none;padding:.7rem 0;border-top:1px solid var(--line);display:flex;justify-content:space-between}
-#sh ul{margin-top:1rem}
+#sh ul{margin-top:1rem;padding:0}
+#hd:focus-visible{outline-offset:-3px;border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>

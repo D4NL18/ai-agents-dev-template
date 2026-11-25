@@ -29,14 +29,16 @@ input{position:absolute;opacity:0;width:1.6rem;height:1.6rem;margin:0}
 .box{flex:none;width:1.7rem;height:1.7rem;border:2px solid var(--ink)}
 .box svg{display:block;width:100%;height:100%}
 .box path{fill:none;stroke:var(--moss);stroke-width:3.2;stroke-linecap:square;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset var(--t,.35s) var(--ease)}
-.txt{font:500 1.15rem var(--serif);background:linear-gradient(var(--ink),var(--ink)) 0 55%/0 2px no-repeat;transition:background-size var(--t,.35s) var(--ease) .12s,opacity .3s}
-.tag{margin-left:auto;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .3s}
+.txt{flex:1;min-width:0;font:500 1.15rem/1.35 var(--serif);transition:opacity .3s}
+.txt span{background:linear-gradient(var(--ink),var(--ink)) 0 58%/0 2px no-repeat;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-size var(--t,.35s) var(--ease) .12s}
+.tag{flex:none;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .3s}
 input:checked+.box path{stroke-dashoffset:0}
-input:checked~.txt{background-size:100% 2px;opacity:.6}
+input:checked~.txt{opacity:.7}
+input:checked~.txt span{background-size:100% 2px}
 input:checked~.tag{opacity:1}
 input:focus-visible+.box{outline:3px solid var(--rust);outline-offset:3px}
 label:hover .box{background:#e6dcc7}
-@media (prefers-reduced-motion:reduce){.box path,.txt,.tag{transition:none}}
+@media (prefers-reduced-motion:reduce){.box path,.txt,.txt span,.tag{transition:none}}
 </style>
 </head>
 <body>
@@ -52,8 +54,8 @@ label:hover .box{background:#e6dcc7}
   if(reduce)list.style.setProperty("--t","0s");
   ITEMS.forEach(function(t,i){
     var li=document.createElement("li");li.dataset.i=i;
-    li.innerHTML='<label><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="txt"></span><span class="tag">Done</span></label>';
-    li.querySelector(".txt").textContent=t;
+    li.innerHTML='<label><input type="checkbox"><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="txt"><span></span></span><span class="tag">Done</span></label>';
+    li.querySelector(".txt span").textContent=t;
     list.appendChild(li);
   });
   function order(){

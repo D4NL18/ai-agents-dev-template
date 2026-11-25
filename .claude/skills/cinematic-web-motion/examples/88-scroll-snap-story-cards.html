@@ -7,13 +7,12 @@
 <!--
 PATTERN: A horizontal strip of story cards using native CSS scroll-snap. Progress dots, a
   "2 / 5" counter and Prev / Next buttons stay in sync with whichever card is snapped.
-Motion: Scrolling and snapping are native (scroll-snap-type: x mandatory). IntersectionObserver
-  (root = track, threshold 0.6) marks the active card; the active card lifts and its dot stretches
+Motion: Scrolling and snapping are native (scroll-snap-type: x mandatory). scroll position (card nearest the snap edge) marks the active card; the active card lifts and its dot stretches
   into a bar. Buttons and dots call scrollIntoView with smooth behaviour.
 Accessibility: Track is a focusable region (tabindex=0) with Left/Right arrow support; dots are
   buttons with aria-label and aria-current; the counter is text, so progress is not colour-only.
   prefers-reduced-motion: scrolling jumps instantly, no lift transition.
-Adapting: THRESHOLD, CARD_W (CSS var), STORIES in CONFIG. Libraries: none.
+Adapting: CARD_W (CSS var), STORIES in CONFIG. Libraries: none.
 -->
 <style>
 :root{--paper:#f2ecdf;--ink:#1c1915;--rust:#a63a1c;--moss:#3d5a38;--ease:cubic-bezier(.2,.7,.2,1);
@@ -53,7 +52,7 @@ h2{font:600 1.5rem/1.15 var(--serif);margin:.5rem 0}
 <div class="dots" id="dots"></div>
 <script>
 (function(){
-  var CONFIG={THRESHOLD:.6,STORIES:[
+  var CONFIG={STORIES:[
     ["Labour","Eleven days without a shift","Dockers voted 412 to 380 to end the stoppage. Here is what changed on paper.","#d9c7a3","#a63a1c"],
     ["Budget","The annex nobody read","A forty-page appendix moved harbour dredging costs to next year's accounts.","#c9d2bd","#2a3a2a"],
     ["Food","Flour at four in the morning","Three bakeries on Rua Nova absorb a 14 percent rise in wheat prices.","#e3c9a8","#2f5a50"],
@@ -79,17 +78,23 @@ h2{font:600 1.5rem/1.15 var(--serif);margin:.5rem 0}
     cards.forEach(function(c,k){c.classList.toggle("on",k===i);ds[k].setAttribute("aria-current",k===i?"true":"false")});
     ct.textContent=(i+1)+" / "+cards.length;pv.disabled=i===0;nx.disabled=i===cards.length-1;
   }
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){if(e.isIntersecting)set(cards.indexOf(e.target))});
-  },{root:tr,threshold:CONFIG.THRESHOLD});
-  cards.forEach(function(c){io.observe(c)});
+  var tk=0;
+  function sync(){
+    tk=0;
+    var max=tr.scrollWidth-tr.clientWidth,pad=parseFloat(getComputedStyle(tr).scrollPaddingLeft)||0,best=0,bd=1e9;
+    if(tr.scrollLeft>=max-2){best=cards.length-1}
+    else cards.forEach(function(c,k){var d=Math.abs(c.offsetLeft-tr.offsetLeft-(tr.scrollLeft+pad)+tr.offsetLeft);d=Math.abs(c.offsetLeft-pad-tr.scrollLeft);if(d<bd){bd=d;best=k}});
+    if(best!==cur||!cards[best].classList.contains("on"))set(best);
+  }
+  tr.addEventListener("scroll",function(){if(!tk)tk=requestAnimationFrame(sync)},{passive:true});
+  addEventListener("resize",sync);
   pv.addEventListener("click",function(){go(cur-1)});
   nx.addEventListener("click",function(){go(cur+1)});
   tr.addEventListener("keydown",function(e){
     if(e.key==="ArrowRight"){e.preventDefault();go(cur+1)}
     else if(e.key==="ArrowLeft"){e.preventDefault();go(cur-1)}
   });
-  set(0);
+  sync();
 })();
 </script>
 </body>

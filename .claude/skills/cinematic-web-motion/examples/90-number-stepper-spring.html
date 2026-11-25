@@ -58,7 +58,8 @@ button:focus-visible,.val:focus-visible{outline:3px solid var(--crust);outline-o
       note=document.getElementById("note"),total=document.getElementById("total");
   var n=2,timer=null,delay=CONFIG.REPEAT_MS;
   function paint(dir){
-    var old=val.firstElementChild;
+    while(val.children.length>1)val.removeChild(val.firstElementChild);
+    var old=val.lastElementChild;
     if(reduce||!dir){old.textContent=n}
     else{
       var s=document.createElement("span");s.textContent=n;
@@ -67,7 +68,7 @@ button:focus-visible,.val:focus-visible{outline:3px solid var(--crust);outline-o
       s.offsetWidth;
       s.style.transform="";s.style.opacity=1;
       old.style.transform="translateY("+(-dir*100)+"%)";old.style.opacity=0;
-      setTimeout(function(){if(old.parentNode)old.parentNode.removeChild(old)},300);
+      setTimeout(function(){if(old.parentNode&&old!==val.lastElementChild)old.parentNode.removeChild(old)},300);
     }
     val.setAttribute("aria-valuenow",n);
     dec.disabled=n<=CONFIG.MIN;inc.disabled=n>=CONFIG.MAX;

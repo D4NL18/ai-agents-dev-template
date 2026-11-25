@@ -28,7 +28,9 @@ form button{flex:none;width:40px;height:40px;border:0;background:none;color:var(
 form button:focus-visible{outline:3px solid var(--rust);outline-offset:-4px;border-radius:50%}
 input{flex:1;min-width:0;border:0;background:none;font:1rem var(--sans);color:var(--ink);padding:0 .8rem 0 0;opacity:0;transition:opacity .25s .15s}
 form.open input{opacity:1}
-input:focus-visible{outline:3px solid var(--rust);outline-offset:2px}
+input:focus-visible{outline:none}
+input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+form:has(input:focus-visible){box-shadow:0 0 0 3px var(--paper),0 0 0 6px var(--rust)}
 ol{list-style:none;padding:0;max-width:760px}
 li{display:grid;grid-template-columns:7ch 1fr;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--rule)}
 li[hidden]{display:none}
@@ -42,6 +44,7 @@ mark{background:linear-gradient(var(--ochre),var(--ochre)) 0 100%/100% 45% no-re
 .empty button:hover{background:var(--ink);color:var(--paper)}
 .empty button:focus-visible{outline:3px solid var(--rust);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:640px){header{position:relative;padding-top:3.6rem}form{position:absolute;top:0;right:0}form.open{width:100%;max-width:none}}
 @media (prefers-reduced-motion:reduce){form,input{transition:none}}
 </style>
 </head>
