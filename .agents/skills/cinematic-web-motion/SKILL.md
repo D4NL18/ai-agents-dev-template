@@ -54,96 +54,30 @@ Recreates the look of viral "one prompt, $8k site" reels: a single product/place
 - `references/08-performance-a11y.md`
 - `references/09-reference-sites.md` verified reference sites, galleries, component registries, Codrops repos
 - `references/10-subtle-ui-references.md` 15+ subtle, generic, product/SaaS UI references (Design Spells, Details Matter, Dead Simple Sites, animations.dev, Origin UI, Kibo UI, SmoothUI, Motion Primitives, etc.)
-- `examples/` 150 standalone HTML components (indexed below by goal; details in `examples/README.md`)
+- `examples/` 150 standalone HTML demos, catalogued by category (see Example Router below; `examples/INDEX.md`)
 
-## Example Index (pick by goal)
-**Product Showcase & Launch Landing Pages**
-- `01-3d-floating-product.html` — 3D bottle floating/spinning, mouse tilt, studio lighting, giant bg text
-- `26-sticky-layers-scrollytelling.html` — MELT-style product assembly, layers drop on scroll, bg color shifts
-- `28-product-configurator-builder.html` — interactive customizer/builder with live layered preview & order modal
-- `39-product-exploded-view.html` — scroll/toggle 3D exploded hardware view with callout lines
-- `40-product-colorway-morph.html` — colorway/finish switcher with radial clip-path wipe & tint morph
-- `41-product-hotspot-zoom.html` — interactive numbered hotspots with smooth pan & zoom into details
-- `43-product-feature-orbit.html` — rotating orbital feature ring around central hero product
-- `44-before-after-compare-slider.html` — draggable/keyboard split curtain comparing raw vs finished hardware
-- `45-3d-apartment-walkthrough.html` — Three.js 3D apartment tour: enter through glass + click rooms (Lounge/Kitchen/Suite)
-- `50-3d-spatial-tour-scroll.html` — Three.js continuous `CatmullRomCurve3` scroll-scrubbed loft apartment tour
-- `46-hero-mask-reveal-curtain.html` — giant SVG knockout text masking hardware stage expanding on scroll
-- `47-floating-review-social-proof.html` — depth-layered hero product with drifting press quotes & cursor parallax
-- `48-scroll-progress-story-rail.html` — 3-act product story with vertical progress rail & sticky morphing visual
-- `49-hover-image-trail-gallery.html` — editorial product index spawning velocity-tilted floating preview cards
+## Example Router (token-lean: read 1 category file, open max 2 examples)
+1. Match the user's intent below. 2. Read ONLY `examples/index/<category>.md` (10-16 lines). 3. Open at most 2 examples, reading just the first ~25 lines (header comment: PATTERN/Motion/Accessibility/Adapting) before reusing code. Never list or read the whole `examples/` folder.
 
-**Scroll Choreography & Layout**
-- `19-horizontal-scroll.html` (pinned horizontal gallery) | `20-clip-path-image-reveal.html` (curtain/iris reveals)
-- `21-parallax-layers.html` (8-layer SVG scroll+mouse parallax) | `22-accordion-gallery.html` (expanding flex panels)
-- `23-bento-hover.html` (bento grid, count-up, tilt, glow) | `24-preloader-counter.html` (0-100 curtain hero intro)
-- `25-scroll-sequence.html` (canvas frame-sequence scrub + Lenis + captions)
-- `42-editorial-lookbook-parallax.html` (asymmetric lookbook with speed differentials & overlapping type)
+| Intent | Category file | # |
+|---|---|---|
+| product reveal, configurator, exploded view, hotspots, colorway, before/after, review parallax | `examples/index/product-showcase.md` | 10 |
+| Three.js scenes, scroll-driven 3D, CSS 3D cards/tunnel, flythroughs | `examples/index/3d-webgl.md` | 12 |
+| WebGL gradients, rays, aurora, particles grids, blobs, glass orbs, canvas visualizers | `examples/index/backgrounds-shaders.md` | 10 |
+| first-screen heroes, preloaders, load sequences, hero-to-section hand-off | `examples/index/hero-intros.md` | 14 |
+| pinned chapters, scrub timelines, frame sequences, route/SVG draws, horizontal pinned scroll, split compare | `examples/index/scroll-storytelling.md` | 16 |
+| parallax depth, sticky stacks, accordions/bento, lookbooks, masonry, carousels, marquee galleries | `examples/index/parallax-layout.md` | 11 |
+| smooth-scroll, scroll-snap, section wipes, velocity skew, scroll-driven CSS, headers/footers/nav tied to scroll | `examples/index/scroll-mechanics.md` | 10 |
+| split/scramble/wave text, marquees, odometers, word-by-word scroll opacity, particle text, link hovers | `examples/index/typography-text.md` | 9 |
+| custom cursors, magnetic, spotlight, lens, elastic, dock, cursor-follow cards, reactive grids | `examples/index/cursor-pointer-fx.md` | 9 |
+| fullscreen menus, curtain/page transitions, view transitions, tabs, dropdown nav | `examples/index/navigation-transitions.md` | 6 |
+| features, testimonials, pricing, team, FAQ, process steps, timelines, logo walls | `examples/index/content-sections.md` | 8 |
+| closing CTA, giant-type footer, end credits | `examples/index/cta-footer-end.md` | 3 |
+| date range, combobox, wizard, dropzone, OTP/range, toggles, stepper, search, copy button, motion preference | `examples/index/ui-forms-inputs.md` | 11 |
+| context menu, popover, inbox, command palette, toasts, drawer, dialogs, lightbox, skeleton, empty state, swipe rows | `examples/index/ui-overlays-feedback.md` | 11 |
+| sortable table, kanban, accordion, pricing toggle, TOC scrollspy, snap cards, marquee logos, flip clock, progress ring, avatars | `examples/index/ui-data-display.md` | 10 |
 
-**3D & WebGL**
-- `02-3d-scroll-rotate-model.html` (scroll-driven pose/color) | `03-3d-particles-sphere.html` (14k morphing particles)
-- `04-3d-card-carousel.html` (CSS-3D ring carousel) | `05-3d-cube-css.html` (pure CSS 3D cube)
-- `06-3d-ring-slabs.html` (Cota-Zero tilted slab ring on scroll)
-
-**Typography, Cursor & Backgrounds/Shaders**
-- `07-split-text-reveal.html` | `08-gradient-wave-text.html` | `09-scramble-text.html` | `10-custom-cursor-trail.html`
-- `11-magnetic-buttons-grid.html` | `12-text-marquee-velocity.html` | `27-tilt-marquee-glass.html` (hero+marquee+tilt+glass nav)
-- `13-shader-gradient-webgl.html` | `14-light-rays.html` | `15-grain-aurora.html` (CSS-only)
-- `16-dot-grid-reactive.html` | `17-liquid-distortion-image.html` | `18-spotlight-border-cards.html`
-
-**Subtle, Generic & Product/SaaS UI (zero deps)**
-- `29-date-range-picker.html` | `30-combobox-multiselect-tags.html` | `31-context-menu-submenu.html`
-- `32-popover-hovercard-origin.html` | `33-stepper-wizard-form.html` | `34-file-dropzone-upload-progress.html`
-- `35-notification-inbox-popover.html` | `36-sortable-data-table-expand.html` | `37-range-slider-otp-input.html` | `38-kanban-drag-drop.html`
-
-**Advanced Motion, CSS Timelines & Interactive Canvas (51–70)**
-- `51-word-by-word-scroll-opacity.html` | `52-sticky-card-stack.html` | `53-magnetic-dock.html` | `54-3d-tilt-flip-cards.html`
-- `55-curtain-page-transition.html` | `56-fullscreen-menu-image-reveal.html` | `57-svg-path-draw-scroll.html` | `58-odometer-stats-ticker.html`
-- `59-glass-orbs-parallax-hero.html` | `60-infinite-drag-carousel.html` | `61-morphing-blob-svg.html` | `62-scroll-driven-css-timeline.html`
-- `63-view-transitions-gallery.html` | `64-canvas-particle-text.html` | `65-horizontal-timeline-scrub.html` | `66-split-screen-scroll-compare.html`
-- `67-cursor-lens-magnifier.html` | `68-audio-visualizer-bars.html` | `69-elastic-string-line.html` | `70-text-scramble-hero-intro.html`
-
-**Product UI Craft: Overlays, Feedback & Forms (71–82)**
-- `71-command-palette-cmdk.html` | `72-sliding-pill-tabs.html` | `73-toast-stack-sonner.html` | `74-drawer-bottom-sheet-vaul.html`
-- `75-smooth-accordion-faq.html` | `76-segmented-control-toggle.html` | `77-copy-button-tooltip.html` | `78-pricing-toggle-cards.html`
-- `79-sticky-toc-scrollspy.html` | `80-skeleton-to-content-shimmer.html` | `81-empty-state-illustrated.html` | `82-morphing-dialog-flip.html`
-
-**Gestures, Lists, Links & Media (83–88)**
-- `83-swipe-to-dismiss-list.html` | `84-animated-checkbox-todo.html` | `85-search-input-expand-filter.html`
-- `86-link-hover-underline-styles.html` | `87-image-zoom-lightbox-flip.html` | `88-scroll-snap-story-cards.html`
-
-**Hero Intros, Ambient Effects & Navigation (89–100)**
-- `89-editorial-hero-load-stagger.html` | `90-number-stepper-spring.html` | `91-logo-marquee-pause-hover.html` | `92-cursor-follow-tooltip-card.html`
-- `93-border-beam-card.html` | `94-flip-clock-countdown.html` | `95-progress-ring-scroll-top.html` | `96-stacked-avatars-hover-expand.html`
-- `97-dropdown-nav-morph.html` | `98-3d-scroll-tunnel.html` | `99-spotlight-mask-reveal.html` | `100-motion-preference-showcase.html`
-
-**Scroll storytelling sections (101–110)**
-- `101-pinned-chapters-crossfade.html` | `102-scroll-zoom-through-hero.html` | `103-sticky-split-text-media.html`
-- `104-parallax-depth-landing.html` | `105-scroll-canvas-frame-hero.html` | `106-color-chapters-background-shift.html`
-- `107-stats-count-section-reveal.html` | `108-giant-type-marquee-scroll-hero.html` | `109-svg-route-map-scroll.html`
-- `110-horizontal-scroll-showcase-section.html`
-
-**Hero sections & intros (111–120)**
-- `111-hero-text-mask-reveal.html` | `112-hero-diagonal-split-reveal.html` | `113-hero-css3d-scene-tilt.html`
-- `114-hero-cursor-spotlight-grid.html` | `115-hero-typewriter-scroll-handoff.html` | `116-hero-shader-gradient-headline.html`
-- `117-hero-orbit-rings-title.html` | `118-hero-curtain-open-on-load.html` | `119-hero-kinetic-typography-scroll.html`
-- `120-hero-title-shrink-to-nav.html`
-
-**Content sections (121–130)**
-- `121-features-sticky-stack-sections.html` | `122-testimonials-scroll-wall.html` | `123-pricing-scroll-reveal-section.html`
-- `124-case-study-horizontal-cards.html` | `125-team-hover-reveal-section.html` | `126-faq-split-sticky-section.html`
-- `127-process-steps-scroll-line.html` | `128-gallery-masonry-parallax.html` | `129-timeline-vertical-draw.html`
-- `130-logo-wall-stagger-section.html`
-
-**Scroll mechanics, whole-page (131–140)**
-- `131-section-clip-path-wipe-transitions.html` | `132-scroll-snap-fullpage-sections.html` | `133-custom-smooth-scroll-lerp.html`
-- `134-scroll-velocity-skew-section.html` | `135-scroll-linked-text-gradient-fill.html` | `136-css-frame-sequence-scrub.html`
-- `137-direction-aware-header-page.html` | `138-parallax-footer-reveal.html` | `139-scroll-progress-chapter-nav.html`
-- `140-css-animation-timeline-sections.html`
-
-**Immersive sections, CTA & footer (141–150)**
-- `141-cards-depth-scroll-section.html` | `142-threejs-scroll-camera-flythrough.html` | `143-footer-giant-type-reveal.html`
-- `144-cta-big-section-magnetic.html` | `145-preloader-to-hero-handoff.html` | `146-section-to-section-page-transition.html`
-- `147-marquee-gallery-scroll-section.html` | `148-cursor-reactive-grid-section.html` | `149-svg-morph-scroll-section.html`
-- `150-end-credits-scroll-section.html`
-
+**Quick picks (best first)**
+- Premium product hero/landing: 26, 28, 101, 24, 46 | 3D: 02, 06, 142 | Scrollytelling: 101, 102, 106, 25
+- Hero intro: 118, 111, 89, 145 | Smooth/section scroll: 133, 132, 131, 140 | Page transitions: 55, 146
+- Type/text: 07, 51, 135 | Cursor: 10, 11, 99 | SaaS UI: 71, 73, 74, 82 | Content sections: 121, 123, 126, 129
